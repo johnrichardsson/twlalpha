@@ -7,7 +7,7 @@ import { COLORS, IMAGES, FONTS, TEXTSTYLES } from '../constants';
 const Home = () => {
     return (
         <View>
-            <Text>Home Hi</Text>
+            <Text>Home Hi change</Text>
         </View>
     )
 }
