@@ -16,4 +16,4 @@ const COLORS = {
     kurdishGold: "#B7BA34",
   };
 
-  export default COLORS
+  export { COLORS }

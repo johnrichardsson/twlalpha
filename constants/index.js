@@ -1,3 +1,3 @@
-import { COLORS } from COLORS
+import { COLORS } from "../constants/COLORS.js"
 
 export { COLORS }
