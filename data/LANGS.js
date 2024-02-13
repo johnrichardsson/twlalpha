@@ -1,9 +1,3 @@
-import * as React from "react";
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity} from "react-native";
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
-
 const LANGS = [
     {
     id: '001ISO3166trktur',
