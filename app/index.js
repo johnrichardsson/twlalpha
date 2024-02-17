@@ -10,11 +10,27 @@ const Home = () => {
     return (
         <SafeAreaView style = {{flex: 1, backgroundColor: COLORS.backdrop}}>
             <Stack.Screen 
-            name = "Index"
             options = {{
-            headerStyle: {backgroundColor: COLORS.primary},
+            textAlign: 'center',
+            title: 'My Languages',
+            headerStyle: {
+                backgroundColor: COLORS.primary,
+                headerShadowVisible: true,                
+            },
+            headerTitleStyle: {
+                color: '#ffffff', 
+            },
+            headerTitleAlign: 'center',
             }}
             />
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View 
+                    style={{
+                    flex: 1,
+                    }}
+                    >    
+                </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }
