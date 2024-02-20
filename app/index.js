@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { View, ScrollView, SafeAreaView, Text } from 'react-native';
+import { View, ScrollView, FlatList, SafeAreaView, Text } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 
 import { COLORS } from '../constants';
+import { CourseIcon } from '../components';
+import { LANGS } from '../data';
 
-const Home = () => {
+const Home = (props) => {
     const router = useRouter();
 
     return (
@@ -23,14 +25,20 @@ const Home = () => {
             headerTitleAlign: 'center',
             }}
             />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View 
-                    style={{
-                    flex: 1,
-                    }}
-                    >    
-                </View>
-            </ScrollView>
+            <View style = {{flex: 1}}>
+                <FlatList
+                    data={ LANGS }
+                    renderItem={({ item }) => (
+                        <CourseIcon
+                            key={item.id}
+                            title={item.title}
+                            titlen={item.titlen}
+                            color={item.color}
+            />
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            />
+            </View>
         </SafeAreaView>
     )
 }

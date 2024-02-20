@@ -7,7 +7,6 @@ const LANGS = [
     color: '#ba4c34',
     family1: 'Oghuz',
     family2: 'Turkic',
-    image: require('../Intro/Image/tur.png'),
     navigateTo: 'TurkishMain',
     },
     {
@@ -18,7 +17,6 @@ const LANGS = [
     color: '#ba7c34',
     family1: 'Germanic',
     family2: 'Indo-European',
-    image: require('../Intro/Image/deu.jpg'),
     navigateTo: 'GermanMain',
     },
     {
@@ -29,7 +27,6 @@ const LANGS = [
     color: '#34a2ba',
     family1: 'Oghuz',
     family2: 'Turkic',
-    image: require('../Intro/Image/aze.png'),
     navigateTo: 'AzerbaijaniMain',
     },
     {
@@ -40,7 +37,6 @@ const LANGS = [
     color: '#b7ba34',
     family1: 'Iranic',
     family2: 'Indo-European',
-    image: require('../Intro/Image/kmr.png'),
     navigateTo: 'KurmanjiMain',
     },
     {
@@ -51,7 +47,6 @@ const LANGS = [
     color: '#34833a',
     family1: 'Oghuz',
     family2: 'Turkic',
-    image: require('../Intro/Image/tuk.png'),
     navigateTo: 'TurkmenMain',
     },
 ];
