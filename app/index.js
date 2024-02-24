@@ -8,7 +8,7 @@ import { LANGS } from '../data';
 
 const Home = (props) => {
     const router = useRouter();
-
+    console.log('LANGS:', LANGS);
     return (
         <SafeAreaView style = {{flex: 1, backgroundColor: COLORS.backdrop}}>
             <Stack.Screen 
@@ -26,17 +26,20 @@ const Home = (props) => {
             }}
             />
             <View style = {{flex: 1}}>
-                <FlatList
-                    data={ LANGS }
-                    renderItem={({ item }) => (
-                        <CourseIcon
-                            key={item.id}
-                            title={item.title}
-                            titlen={item.titlen}
-                            color={item.color}
-            />
-            )}
-            keyExtractor={(item) => item.id.toString()}
+                <Text> a b c</Text>
+                    <FlatList
+                        data={ LANGS }
+                        renderItem={({ item }) => (
+                            <View>
+                                <CourseIcon
+                                    key={item.id}
+                                    title={item.title}
+                                    titlen={item.titlen}
+                                    color={item.color}
+                                />
+                            </View>
+                        )}
+                        keyExtractor={(item) => item.id.toString()}
             />
             </View>
         </SafeAreaView>
