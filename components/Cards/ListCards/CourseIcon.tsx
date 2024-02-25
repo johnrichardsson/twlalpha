@@ -10,7 +10,7 @@ const CourseIcon = (props) => {
             justifyContent: 'center',
             alignItems: 'center',
             width: 360,
-            height: 0.2,
+            height: 160,
             marginLeft: 30,
             marginRight: 30,
             flexShrink: 0,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     },
     langIconContainer: {
         justifyContent: 'center',
-        width: 300,
+        width: 330,
         height: 150,
     },
     langTitle: {
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     langIconMain: {
-        width: 300,
+        width: 330,
         height: 150,
         flexShrink: 0,
         borderRadius: 50,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     langPictureMain: {
         zIndex: 0,
         justifyContent: 'center',
-        width: 270,
+        width: 300,
         marginLeft: 15,
         marginRight: 15,
         height: 120,
