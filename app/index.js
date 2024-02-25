@@ -26,13 +26,11 @@ const Home = (props) => {
             />
             <View style = {{flex: 1}}>
                 <Text> a b c</Text>
-                    <ScrollView>
                     <FlatList
                         data={ LANGS }
                         renderItem={({ item }) => (
                             <View>
                                 <CourseIcon
-                                    key = {item.id}
                                     title = {item.title}
                                     titlen = {item.titlen}
                                     color = {item.color}
@@ -41,7 +39,7 @@ const Home = (props) => {
                         )}
                         keyExtractor={(item) => item.id.toString()}
                     />
-                    </ScrollView>
+                <Text> d e f </Text>
             </View>
         </SafeAreaView>
     )
