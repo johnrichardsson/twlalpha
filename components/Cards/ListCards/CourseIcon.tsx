@@ -32,7 +32,7 @@ const CourseIcon = (props) => {
         ></TouchableOpacity>
         <TouchableOpacity
           style={{
-            marginLeft: 265,
+            marginLeft: 285,
             marginTop: -50,
             zIndex: 6,
             width: 0,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         backgroundColor: '#ffffff'},
     startButton: {
-        marginLeft: 250,
+        marginLeft: 270,
         marginTop: 25,
         backgroundColor: '#ffffff',
         zIndex: 4,
