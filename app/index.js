@@ -3,7 +3,7 @@ import { View, ScrollView, FlatList, SafeAreaView, Text } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 
 import { COLORS } from '../constants';
-import { CourseIcon } from '../components';
+import { CourseIcon, ScreenHeaderBtn } from '../components';
 import { LANGS } from '../data';
 
 const Home = (props) => {
@@ -22,10 +22,15 @@ const Home = (props) => {
                 color: '#ffffff', 
             },
             headerTitleAlign: 'center',
-            }}
+            headerLeft: () => (
+                <ScreenHeaderBtn/>
+            ),
+            }}            
             />
-            <View style = {{flex: 1}}>
-                <Text> a b c</Text>
+            <View style = {{
+                flex: 1,
+                alignItems: 'center'
+            }}>
                     <FlatList
                         data={ LANGS }
                         renderItem={({ item }) => (
@@ -39,7 +44,6 @@ const Home = (props) => {
                         )}
                         keyExtractor={(item) => item.id.toString()}
                     />
-                <Text> d e f </Text>
             </View>
         </SafeAreaView>
     )

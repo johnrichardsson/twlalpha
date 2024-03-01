@@ -1,5 +1,6 @@
 import * as React from "react";
 import { View, Text,  StyleSheet, Image, TouchableOpacity} from "react-native";
+import { TriangleButton } from "../../Widgets/TriangleButton";
 
 const CourseIcon = (props) => {
  return (
@@ -9,7 +10,7 @@ const CourseIcon = (props) => {
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            width: 360,
+            width: 330,
             height: 160,
             marginLeft: 30,
             marginRight: 30,
@@ -30,40 +31,21 @@ const CourseIcon = (props) => {
         <TouchableOpacity
           style={styles.startButton}
         ></TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            marginLeft: 285,
-            marginTop: -50,
-            zIndex: 6,
-            width: 0,
-            height: 0,
-            backgroundColor: 'transparent',
-            borderStyle: 'solid',
-            borderLeftWidth: 35,
-            borderRightWidth: 35,
-            borderBottomWidth: 20,
-            borderTopWidth: 20,
-            borderLeftColor: props.color,
-            borderRightColor: 'transparent',
-            borderBottomColor: 'transparent',
-            borderTopColor: 'transparent',
-            position: 'relative',
-          }}>
-          </TouchableOpacity>
+        <TriangleButton color= {props.color}/>
       </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
+        flex: 1
     },
     langContainer: {
         justifyContent: 'center',
-        marginTop: 19,
+        marginTop: 20,
+        marginRight: 20,
         width: 360,
-        height: 159,
+        height: 160,
     },
     langIconContainer: {
         justifyContent: 'center',
@@ -87,7 +69,7 @@ const styles = StyleSheet.create({
         width: 300,
         marginLeft: 15,
         marginRight: 15,
-        height: 120,
+        height: 129,
         flexShrink: 0,
         borderRadius: 30,
         backgroundColor: '#ffffff'},
