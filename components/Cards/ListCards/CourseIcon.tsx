@@ -28,10 +28,14 @@ const CourseIcon = (props) => {
             {props.title} / {props.titlen}
           </Text>
         </View>
+        <View>
         <TouchableOpacity
           style={styles.startButton}
         ></TouchableOpacity>
         <TriangleButton color= {props.color}/>
+        <View style={styles.levelPlaque}>
+        </View>
+        </View>
       </View>
     </View>
   );
@@ -121,6 +125,24 @@ const styles = StyleSheet.create({
         borderTopColor: 'transparent',
         position: 'absolute'
     },
+    levelContainer: {
+      height: 60,
+      width: 60,
+      zIndex: 7,
+      position: 'absolute',
+
+    },
+    levelPlaque: {
+      marginLeft: 50,
+      marginTop: 25,
+      backgroundColor: '#ffffff',
+      zIndex: 7,
+      height: 60,
+      width: 60,
+      borderRadius: 30,
+      borderWidth: 1,
+      position: 'absolute'
+  },
 },
 );
 export default CourseIcon;
