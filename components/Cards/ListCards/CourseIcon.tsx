@@ -20,7 +20,7 @@ const CourseIcon = (props) => {
           }}
         >
           <View style={styles.langPictureMain}>
-            <View style={styles.langPicture}/>
+            <Image style={styles.langPicture} source={props.image}/>
           </View>
         </View>
         <View style={styles.langTitleBox}>
@@ -33,8 +33,33 @@ const CourseIcon = (props) => {
           style={styles.startButton}
         ></TouchableOpacity>
         <TriangleButton color= {props.color}/>
-        <View style={styles.levelPlaque}>
+        <View style = {{  
+          height: 120,
+          width: 70,
+          borderRadius: 20,
+          marginLeft: 40,
+          zIndex: 3,
+          position: 'absolute',
+          backgroundColor: props.color
+          }}>
         </View>
+          <View style= {styles.levelContainer}>
+            <Text style = 
+            {{
+              zIndex: 8
+            }}>
+                Level
+            </Text>
+            <Text style = 
+            {{
+              fontSize: 30,
+              zIndex: 8
+            }}>
+                1
+            </Text>
+            <View style={styles.levelPlaque}>
+            </View>
+          </View>
         </View>
       </View>
     </View>
@@ -92,8 +117,8 @@ const styles = StyleSheet.create({
 
     langPicture: {
         alignItems: 'center',
-        width: 270,
-        height: 120,
+        width: 300,
+        height: 130,
         flexShrink: 0,
         borderRadius: 30,
         backgroundColor: '#ffffff'},
@@ -125,21 +150,28 @@ const styles = StyleSheet.create({
         borderTopColor: 'transparent',
         position: 'absolute'
     },
-    levelContainer: {
-      height: 60,
-      width: 60,
-      zIndex: 7,
+    sideBar: {
+      height: 70,
+      width: 70,
+      zIndex: 3,
       position: 'absolute',
 
     },
-    levelPlaque: {
-      marginLeft: 50,
+    levelContainer: {
+      marginLeft: 35,
       marginTop: 25,
+      zIndex: 7,
+      height: 70,
+      width: 70,
+      alignItems: 'center',
+      position: 'absolute'
+    },
+    levelPlaque: {
       backgroundColor: '#ffffff',
       zIndex: 7,
-      height: 60,
-      width: 60,
-      borderRadius: 30,
+      height: 70,
+      width: 70,
+      borderRadius: 35,
       borderWidth: 1,
       position: 'absolute'
   },

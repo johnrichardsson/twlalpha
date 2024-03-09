@@ -39,6 +39,7 @@ const Home = (props) => {
                                     title = {item.title}
                                     titlen = {item.titlen}
                                     color = {item.color}
+                                    image = {item.image}
                                 />
                             </View>
                         )}
