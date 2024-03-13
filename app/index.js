@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { View, ScrollView, FlatList, SafeAreaView, Text } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { View, FlatList, SafeAreaView, Text } from 'react-native';
+import { Stack, Link, useRouter } from 'expo-router';
 
 import { COLORS } from '../constants';
 import { CourseIcon, ScreenHeaderBtn } from '../components';
@@ -33,6 +33,7 @@ const Home = (props) => {
             }}>
                     <FlatList
                         data={ LANGS }
+                        showsVerticalScrollIndicator={false}
                         renderItem={({ item }) => (
                             <View>
                                 <CourseIcon
@@ -40,6 +41,7 @@ const Home = (props) => {
                                     titlen = {item.titlen}
                                     color = {item.color}
                                     image = {item.image}
+                                    onPress = {item.onPress}
                                 />
                             </View>
                         )}

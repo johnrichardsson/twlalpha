@@ -1,8 +1,10 @@
-import { View, TouchableOpacity } from "react-native"
+import { View, TouchableOpacity } from "react-native";
+import { Link } from "expo-router";
 
 const TriangleButton = (props) => {
 return (
 <View style = {{zIndex: 6}}>
+    <Link href={props.onPress} asChild>
     <TouchableOpacity
             style={{
                 marginLeft: 285,
@@ -22,6 +24,7 @@ return (
                 position: 'absolute',
             }}>
     </TouchableOpacity>
+    </Link>
 </View>
 )
 }

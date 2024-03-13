@@ -7,7 +7,8 @@ const LANGS = [
     color: '#ba4c34',
     family1: 'Oghuz',
     family2: 'Turkic',
-    image: require('../assets/images/tur.png')
+    image: require('../assets/images/tur.png'),
+    onPress: '/tur/turCourse'
     },
     {
     id: '002ISO3166gemdeu',
@@ -17,7 +18,8 @@ const LANGS = [
     color: '#ba7c34',
     family1: 'Germanic',
     family2: 'Indo-European',
-    image: require('../assets/images/deu.jpg')
+    image: require('../assets/images/deu.jpg'),
+    onPress: '/deu/deuCourse'
     },
     {
     id: '003ISO3166trkaze',
@@ -27,7 +29,8 @@ const LANGS = [
     color: '#34a2ba',
     family1: 'Oghuz',
     family2: 'Turkic',
-    image: require('../assets/images/aze.png')
+    image: require('../assets/images/aze.png'),
+    onPress: '/aze/azeCourse'
     },
     {
     id: '004ISO3166irakmr',
@@ -37,7 +40,8 @@ const LANGS = [
     color: '#b7ba34',
     family1: 'Iranic',
     family2: 'Indo-European',
-    image: require('../assets/images/kmr.png')
+    image: require('../assets/images/kmr.png'),
+    onPress: '/kmr/kmrCourse'
     },
     {
     id: '005ISO3166trktuk',
@@ -47,7 +51,8 @@ const LANGS = [
     color: '#34833a',
     family1: 'Oghuz',
     family2: 'Turkic',
-    image: require('../assets/images/tuk.png')
+    image: require('../assets/images/tuk.png'),
+    onPress: '/tuk/tukCourse'
     },
 ];
 

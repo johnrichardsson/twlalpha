@@ -1,68 +1,59 @@
 import * as React from "react";
+import { Link } from "expo-router";
 import { View, Text,  StyleSheet, Image, TouchableOpacity} from "react-native";
 import { TriangleButton } from "../../Widgets/TriangleButton";
+import LevelPlaque from "../../Widgets/LevelPlaque";
 
 const CourseIcon = (props) => {
  return (
-    <View style={styles.langContainer}>
-      <View style={styles.langIconContainer}>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: 330,
-            height: 160,
-            marginLeft: 30,
-            marginRight: 30,
-            flexShrink: 0,
-            borderRadius: 50,
-            backgroundColor: props.color,
-          }}
-        >
-          <View style={styles.langPictureMain}>
-            <Image style={styles.langPicture} source={props.image}/>
-          </View>
-        </View>
-        <View style={styles.langTitleBox}>
-          <Text style={styles.langTitle}>
-            {props.title} / {props.titlen}
-          </Text>
-        </View>
-        <View>
-        <TouchableOpacity
-          style={styles.startButton}
-        ></TouchableOpacity>
-        <TriangleButton color= {props.color}/>
-        <View style = {{  
-          height: 120,
-          width: 70,
-          borderRadius: 20,
-          marginLeft: 40,
-          zIndex: 3,
-          position: 'absolute',
-          backgroundColor: props.color
-          }}>
-        </View>
-          <View style= {styles.levelContainer}>
-            <Text style = 
-            {{
-              zIndex: 8
-            }}>
-                Level
-            </Text>
-            <Text style = 
-            {{
-              fontSize: 30,
-              zIndex: 8
-            }}>
-                1
-            </Text>
-            <View style={styles.levelPlaque}>
+      <View style={styles.langContainer}>
+        <View style={styles.langIconContainer}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: 330,
+              height: 160,
+              marginLeft: 30,
+              marginRight: 30,
+              flexShrink: 0,
+              borderRadius: 50,
+              backgroundColor: props.color,
+            }}
+          >
+            <View style={styles.langPictureMain}>
+              <Image style={styles.langPicture} source={props.image}/>
             </View>
+          </View>
+          <View style={styles.langTitleBox}>
+            <Text style={styles.langTitle}>
+              {props.title} / {props.titlen}
+            </Text>
+          </View>
+          <View>
+          <Link href={props.onPress} asChild>
+          <TouchableOpacity
+            style={styles.startButton}
+          ></TouchableOpacity>
+          </Link>
+          <TriangleButton 
+          color= {props.color}
+          onPress= {props.onPress}
+          />
+          <View style = {{  
+            height: 120,
+            width: 70,
+            borderRadius: 20,
+            marginLeft: 40,
+            zIndex: 3,
+            position: 'absolute',
+            backgroundColor: props.color
+            }}>
+          </View>
+            <LevelPlaque/>
           </View>
         </View>
       </View>
-    </View>
   );
 };
 const styles = StyleSheet.create({
