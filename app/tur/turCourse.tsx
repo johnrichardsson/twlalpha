@@ -4,16 +4,16 @@ import { Stack, Link, useRouter } from 'expo-router';
 
 import { LessonCard } from '../../components';
 import { COLORS } from '../../constants';
-import TURKISHCHAPTER1 from '../tur/turData/turChapters'
+import TURKISHCHAPTER1 from './turData/turChapter1'
 
 const turCourse = () => {
     return (
         <SafeAreaView>
-            <Text>turCourse</Text>
             <View style = {{
                 flex: 1,
                 alignItems: 'center'
             }}>
+                <Text>Chapter 1</Text>
                     <FlatList
                         data={ TURKISHCHAPTER1 }
                         showsVerticalScrollIndicator={false}
