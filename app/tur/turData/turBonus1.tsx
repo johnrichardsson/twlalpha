@@ -3,19 +3,19 @@ const TURKISHBONUS1 = [
     id: 'trktur-Slang',
     title: 'Turkish Slang',
     lessonType: 'Vocab',
-    navigateTo: 'TurkishB1a',
+    onPress: 'TurkishB1a',
     },
     {
     id: 'trktur-LovingWords',
     title: 'Loving Words',
     lessonType: 'Vocab',
-    navigateTo: 'TurkishB1b',
+    onPress: 'TurkishB1b',
     },
     {
     id: 'trktur-Istanbul',
     title: 'Istanbul',
     lessonType: 'Vocab',
-    navigateTo: 'TurkishB1c',
+    onPress: 'TurkishB1c',
     },
 ];
 
