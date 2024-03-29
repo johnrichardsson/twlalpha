@@ -4,11 +4,12 @@ import { Stack, Link, useRouter } from 'expo-router';
 
 import { LessonCard } from '../../components';
 import { COLORS } from '../../constants';
+
+import TURKISHCHAPTERINDEX from './turData/turChapterIndex'
 import TURKISHBONUS1 from './turData/turBonus1'
 import TURKISHBONUS2 from './turData/turBonus2'
 import TURKISHBONUS3 from './turData/turBonus3'
 import TURKISHBONUS4 from './turData/turBonus4'
-import TURKISHBONUS5 from './turData/turChapter5'
 import TURKISHCHAPTER1 from './turData/turChapter1'
 import TURKISHCHAPTER2 from './turData/turChapter2'
 import TURKISHCHAPTER3 from './turData/turChapter3'
@@ -26,9 +27,8 @@ import TURKISHCHAPTER14 from './turData/turChapter14'
 import TURKISHCHAPTER15 from './turData/turChapter15'
 
 
-const turCourse = () => {
+const turCourse = (props) => {
     return (
-        <SafeAreaView>
         <ScrollView>
             <View style = {{
                 flex: 1,
@@ -44,7 +44,7 @@ const turCourse = () => {
                                 <LessonCard
                                     title = {item.title}
                                     color = {COLORS.turkishRed}
-                                    onPress = {item.onPress}
+                                    lessonOpen = {item.lessonOpen}
                                 />
                             </View>
                         )}
@@ -65,7 +65,7 @@ const turCourse = () => {
                                 <LessonCard
                                     title = {item.title}
                                     color = {COLORS.turkishRed}
-                                    onPress = {item.onPress}
+                                    lessonOpen = {item.lessonOpen}
                                 />
                             </View>
                         )}
@@ -86,7 +86,7 @@ const turCourse = () => {
                                 <LessonCard
                                     title = {item.title}
                                     color = {COLORS.turkishRed}
-                                    onPress = {item.onPress}
+                                    lessonOpen = {item.lessonOpen}
                                 />
                             </View>
                         )}
@@ -107,7 +107,7 @@ const turCourse = () => {
                                 <LessonCard
                                     title = {item.title}
                                     color = {COLORS.turkishRed}
-                                    onPress = {item.onPress}
+                                    lessonOpen = {item.lessonOpen}
                                 />
                             </View>
                         )}
@@ -128,7 +128,7 @@ const turCourse = () => {
                                 <LessonCard
                                     title = {item.title}
                                     color = {COLORS.turkishRed}
-                                    onPress = {item.onPress}
+                                    lessonOpen = {item.lessonOpen}
                                 />
                             </View>
                         )}
@@ -149,7 +149,7 @@ const turCourse = () => {
                                 <LessonCard
                                     title = {item.title}
                                     color = {COLORS.turkishRed}
-                                    onPress = {item.onPress}
+                                    lessonOpen = {item.lessonOpen}
                                 />
                             </View>
                         )}
@@ -170,7 +170,7 @@ const turCourse = () => {
                                 <LessonCard
                                     title = {item.title}
                                     color = {COLORS.turkishRed}
-                                    onPress = {item.onPress}
+                                    lessonOpen = {item.lessonOpen}
                                 />
                             </View>
                         )}
@@ -191,7 +191,7 @@ const turCourse = () => {
                                 <LessonCard
                                     title = {item.title}
                                     color = {COLORS.turkishRed}
-                                    onPress = {item.onPress}
+                                    lessonOpen = {item.lessonOpen}
                                 />
                             </View>
                         )}
@@ -212,7 +212,7 @@ const turCourse = () => {
                                 <LessonCard
                                     title = {item.title}
                                     color = {COLORS.turkishRed}
-                                    onPress = {item.onPress}
+                                    lessonOpen = {item.lessonOpen}
                                 />
                             </View>
                         )}
@@ -233,7 +233,7 @@ const turCourse = () => {
                                 <LessonCard
                                     title = {item.title}
                                     color = {COLORS.turkishRed}
-                                    onPress = {item.onPress}
+                                    lessonOpen = {item.lessonOpen}
                                 />
                             </View>
                         )}
@@ -254,7 +254,7 @@ const turCourse = () => {
                                     <LessonCard
                                         title = {item.title}
                                         color = {COLORS.turkishRed}
-                                        onPress = {item.onPress}
+                                        lessonOpen = {item.lessonOpen}
                                     />
                                 </View>
                             )}
@@ -275,7 +275,7 @@ const turCourse = () => {
                                     <LessonCard
                                         title = {item.title}
                                         color = {COLORS.turkishRed}
-                                        onPress = {item.onPress}
+                                        lessonOpen = {item.lessonOpen}
                                     />
                                 </View>
                             )}
@@ -296,7 +296,7 @@ const turCourse = () => {
                                     <LessonCard
                                         title = {item.title}
                                         color = {COLORS.turkishRed}
-                                        onPress = {item.onPress}
+                                        lessonOpen = {item.lessonOpen}
                                     />
                                 </View>
                             )}
@@ -318,7 +318,7 @@ const turCourse = () => {
                                     <LessonCard
                                         title = {item.title}
                                         color = {COLORS.turkishRed}
-                                        onPress = {item.onPress}
+                                        lessonOpen = {item.lessonOpen}
                                     />
                                 </View>
                             )}
@@ -339,7 +339,7 @@ const turCourse = () => {
                                     <LessonCard
                                         title = {item.title}
                                         color = {COLORS.turkishRed}
-                                        onPress = {item.onPress}
+                                        lessonOpen = {item.lessonOpen}
                                     />
                                 </View>
                             )}
@@ -360,7 +360,7 @@ const turCourse = () => {
                                     <LessonCard
                                         title = {item.title}
                                         color = {COLORS.turkishRed}
-                                        onPress = {item.onPress}
+                                        lessonOpen = {item.lessonOpen}
                                     />
                                 </View>
                             )}
@@ -381,7 +381,7 @@ const turCourse = () => {
                                     <LessonCard
                                         title = {item.title}
                                         color = {COLORS.turkishRed}
-                                        onPress = {item.onPress}
+                                        lessonOpen = {item.lessonOpen}
                                     />
                                 </View>
                             )}
@@ -402,7 +402,7 @@ const turCourse = () => {
                                     <LessonCard
                                         title = {item.title}
                                         color = {COLORS.turkishRed}
-                                        onPress = {item.onPress}
+                                        lessonOpen = {item.lessonOpen}
                                     />
                                 </View>
                             )}
@@ -423,15 +423,14 @@ const turCourse = () => {
                                     <LessonCard
                                         title = {item.title}
                                         color = {COLORS.turkishRed}
-                                        onPress = {item.onPress}
+                                        lessonOpen = {item.lessonOpen}
                                     />
                                 </View>
                             )}
                             keyExtractor={(item) => item.id.toString()}
                         />
             </View>
-</ScrollView>
-</SafeAreaView>
+        </ScrollView>
         
     )
 }
