@@ -1,14 +1,27 @@
-import * as react from "react";
-import { View } from "react-native";
-
-import { Lesson } from "../../../../components";
-
-const Turkish1a = () =>{
-    return(
-        <View>
-            <Lesson/>
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import Turkish1aLogic from './Turkish1aLogic';
+ 
+const App = () => {
+    return (
+        <View style={{ flex: 1, }}>
+            <Text style={styles.heading}>
+                Interactive Quiz App
+            </Text>
+            <Turkish1aLogic />
         </View>
-    )
-}
-
-export default Turkish1a
+    );
+};
+ 
+export default App;
+const styles = StyleSheet.create({
+    heading: {
+        fontSize: 25,
+        marginBottom: 30,
+        marginLeft: 35,
+        marginTop: 60,
+        fontWeight: 'bold',
+        color: 'green',
+    }
+ 
+})
