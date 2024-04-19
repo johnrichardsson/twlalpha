@@ -94,4 +94,15 @@ export const shuffleArray = (array) => {
     return shuffledArray;
 };
 
-export const shuffledTurkish1aQ = shuffleArray(Turkish1aQ);
+const shuffleOptions = (questions) => {
+    const shuffledQuestions = questions.map((question) => {
+        // Shuffle the options array for each question
+        const shuffledOptions = shuffleArray(question.options);
+        // Return the question with shuffled options
+        return { ...question, options: shuffledOptions };
+    });
+    return shuffledQuestions;
+};
+
+
+export const shuffledTurkish1aQ = shuffleArray(shuffleOptions(Turkish1aQ));

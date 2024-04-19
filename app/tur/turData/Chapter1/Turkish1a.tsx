@@ -5,12 +5,6 @@ import { Turkish1aQ } from './Questions/Turkish1aQ';
 import { shuffledTurkish1aQ } from './Questions/Turkish1aQ';
  
 const Turkish1a = () => {
-    const [shuffledQuestions, setShuffledQuestions] = useState([]);
-
-    useEffect(() => {
-        // Shuffle the questions array when the component mounts
-        setShuffledQuestions(shuffleArray(Turkish1aQ));
-    }, []);
 
     return (
         <View style={{ flex: 1 }}>
@@ -34,12 +28,3 @@ const styles = StyleSheet.create({
         color: 'green',
     }
 });
-
-function shuffleArray(array) {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-    }
-    return shuffledArray;
-}
