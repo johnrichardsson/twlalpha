@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import {
-    View, Text, TouchableOpacity,
-    StyleSheet
-} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Audio} from 'expo-av'
 
 const Lesson = (props) => {
-    const { questions } = props; // Destructure questions from props
+    const { questions } = props;
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [timeLeft, setTimeLeft] = useState(10);
+    
 
     const handleAnswer = (selectedOption) => {
         if (selectedOption === questions[currentQuestion].correctAnswer) {
@@ -30,6 +29,18 @@ const Lesson = (props) => {
         setQuizCompleted(false);
         setTimeLeft(10);
     };
+
+    const playSound = async () => {
+      try {
+        const { sound } = await Audio.Sound.createAsync(
+          { uri: questions[currentQuestion].media } ,
+          { shouldPlay: true }
+        );
+      } catch (error) {
+        console.log('Error playing sound: ', error);
+      }
+    };
+
 
     const displayAnswers = questions.map((question, index) => (
         <View key={index}>
@@ -71,6 +82,8 @@ const Lesson = (props) => {
                     <Text style={styles.timer}>
                         Time Left: {timeLeft} sec
                     </Text>
+                      <TouchableOpacity style = {{width: 100, height: 100, backgroundColor: "grey", alignItems: "center"}} onPress={playSound}>
+                      </TouchableOpacity>
                     {questions[currentQuestion].options.map((option, index) => (
                         <TouchableOpacity
                             key={index}
