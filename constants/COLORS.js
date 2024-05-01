@@ -11,6 +11,7 @@ const COLORS = {
     white: "#FFFFFF",
 
     turkishRed: "#BA4C34",
+    turkishRedAlt: "#542217",
     germanOrange: "#BA7C34",
     azerbaijaniBlue: "#34A2BA",
     kurdishGold: "#B7BA34",

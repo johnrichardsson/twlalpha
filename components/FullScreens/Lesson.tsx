@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {Audio} from 'expo-av'
+import { Circle } from 'react-native-progress';
+import { COLORS } from '../../constants';
 
 const Lesson = (props) => {
     const { questions } = props;
@@ -9,6 +11,24 @@ const Lesson = (props) => {
     const [score, setScore] = useState(0);
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [timeLeft, setTimeLeft] = useState(10);
+
+    useEffect(() => {
+        setTimeLeft(10); // Reset timer to 10 seconds for each new question
+    }, [currentQuestion]);
+
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTimeLeft((prevTimeLeft) => {
+                if (prevTimeLeft === 0) {
+                    return 0;
+                }
+                return prevTimeLeft - 0.1;
+            });
+        }, 100);
+
+        return () => clearInterval(timer);
+    }, [currentQuestion, quizCompleted]);
     
 
     const handleAnswer = (selectedOption) => {
@@ -27,7 +47,6 @@ const Lesson = (props) => {
         setCurrentQuestion(0);
         setScore(0);
         setQuizCompleted(false);
-        setTimeLeft(10);
     };
 
     const playSound = async () => {
@@ -75,15 +94,30 @@ const Lesson = (props) => {
                     </TouchableOpacity>
                 </View>
             ) : (
-                <View>
+                <View style={{alignItems: 'center'}}>
                     <Text style={styles.question}>
                         {questions[currentQuestion].question}
                     </Text>
-                    <Text style={styles.timer}>
-                        Time Left: {timeLeft} sec
-                    </Text>
-                      <TouchableOpacity style = {{width: 100, height: 100, backgroundColor: "grey", alignItems: "center"}} onPress={playSound}>
-                      </TouchableOpacity>
+                    <Circle
+                        progress={timeLeft / 10}
+                        size={30}
+                        thickness={15}
+                        color= {COLORS.turkishRed}
+                        unfilledColor= {COLORS.turkishRedAlt}
+                        borderWidth={0}
+                        showsText={false}
+                        style={{ marginBottom: 0 }}
+                    />
+                    <Text style = {{marginBottom: 10}}> BONUS </Text>
+                    <View style = {{width: '100%', alignItems: "center", height: 150}}>
+                        <TouchableOpacity style = {{alignItems:'center', justifyContent: 'center', width: 100, height: 100, borderRadius: 25, marginBottom: 30, backgroundColor: "lightgrey"}} onPress={playSound}>
+                                <Image
+                                style = {{width: 64, height: 50}} 
+                                source = {require('../../../twlalpha/assets/images/audio.png')}
+                                />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.optionsContainer}>
                     {questions[currentQuestion].options.map((option, index) => (
                         <TouchableOpacity
                             key={index}
@@ -95,6 +129,7 @@ const Lesson = (props) => {
                             </Text>
                         </TouchableOpacity>
                     ))}
+                    </View>
                 </View>
             )}
         </View>
@@ -107,15 +142,27 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     question: {
-        fontSize: 18,
+        color: 'black',
+        fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 20,
     },
     option: {
-        backgroundColor: '#DDDDDD',
-        padding: 10,
-        marginBottom: 10,
+        width: '48%',
+        marginVertical: 10,
         alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'lightgray',
+        borderRadius: 8,
+        paddingVertical: 15,
+        paddingHorizontal: 10,
+    },
+    optionsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        width: '90%',
+        marginTop: 20,
     },
     buttonText: {
         fontSize: 16,
