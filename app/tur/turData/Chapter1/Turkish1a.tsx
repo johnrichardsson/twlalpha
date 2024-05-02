@@ -5,14 +5,14 @@ import { shuffledTurkish1aQ } from './Questions/Turkish1aQ';
  
 const Turkish1a = () => {
     return (
-        <SafeAreaView style={{ alignItems: 'center' }}>
+        <SafeAreaView style={{ height: '100%', alignItems: 'center' }}>
                 <View style={styles.headBar}>
                     <Text style={styles.heading}>
                         Chapter 1a
                     </Text>
                 </View>
                 <View>
-                <Lesson questions= {shuffledTurkish1aQ} />
+                <Lesson questions= {shuffledTurkish1aQ} primary= {COLORS.turkishRed} secondary = {COLORS.turkishRedAlt}/>
                 </View>
         </SafeAreaView>
     );
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     headBar: {
         alignItems:'center',
         width: '100%',
-        height: 120,
+        height: '15%',
         fontWeight: 'bold',
         backgroundColor: COLORS.turkishRed,
         },

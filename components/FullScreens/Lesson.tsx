@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Image, ScrollView} from 'react-native';
 import {Audio} from 'expo-av'
 import { Circle } from 'react-native-progress';
 import { COLORS } from '../../constants';
+import { Result } from '..';
 
 const Lesson = (props) => {
     const { questions } = props;
@@ -11,6 +12,24 @@ const Lesson = (props) => {
     const [score, setScore] = useState(0);
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [timeLeft, setTimeLeft] = useState(10);
+    const [showResultModal, setShowResultModal] = useState(false);
+    const [resultModalContent, setResultModalContent] = useState('');
+    const [timerFrozen, setTimerFrozen] = useState(false);
+
+    useEffect(() => {
+        if (!timerFrozen) {
+            const timer = setInterval(() => {
+                setTimeLeft((prevTimeLeft) => {
+                    if (prevTimeLeft === 0) {
+                        return 0;
+                    }
+                    return prevTimeLeft - 0.1;
+                });
+            }, 100);
+    
+            return () => clearInterval(timer);
+        }
+    }, [currentQuestion, quizCompleted, timerFrozen]);
 
     useEffect(() => {
         setTimeLeft(10); // Reset timer to 10 seconds for each new question
@@ -32,9 +51,21 @@ const Lesson = (props) => {
     
 
     const handleAnswer = (selectedOption) => {
-        if (selectedOption === questions[currentQuestion].correctAnswer) {
+        const correctAnswer = questions[currentQuestion].correctAnswer;
+        const isCorrect = selectedOption === correctAnswer;
+
+        if (isCorrect) {
             setScore(score + 1);
+            setResultModalContent('Correct!');
+            setShowResultModal(true);
+            setTimerFrozen(true);
+        } else {
+            setResultModalContent(`Wrong! The correct answer is: ${correctAnswer}`);
+            setShowResultModal(true);
+            setTimerFrozen(true);
         }
+
+        setShowResultModal(true);
 
         if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(currentQuestion + 1);
@@ -48,6 +79,7 @@ const Lesson = (props) => {
         setScore(0);
         setQuizCompleted(false);
     };
+
 
     const playSound = async () => {
       try {
@@ -76,8 +108,19 @@ const Lesson = (props) => {
 
     return (
         <View style={styles.container}>
+            <Result
+                visible={showResultModal}
+                result={resultModalContent}
+                onClose={() => {
+                    setShowResultModal(false);
+                    setTimerFrozen(false); // Clear the timer freeze
+                    setTimeLeft(10);
+                }}
+            />
             {quizCompleted ? (
                 <View>
+                    <View style = {{height: '75%'}}>
+                    <ScrollView>
                     <Text style={styles.score}>
                         Your Score: {score}
                     </Text>
@@ -85,16 +128,18 @@ const Lesson = (props) => {
                         Questions and Answers:
                     </Text>
                     {displayAnswers}
+                    </ScrollView>
+                    </View>
                     <TouchableOpacity
-                        style={styles.retestButton}
-                        onPress={handleRetest}>
-                        <Text style={styles.buttonText}>
-                            Retest
-                        </Text>
+                    style={styles.retestButton}
+                    onPress={handleRetest}>
+                    <Text style={styles.buttonText}>
+                        Retest
+                    </Text>
                     </TouchableOpacity>
                 </View>
             ) : (
-                <View style={{alignItems: 'center'}}>
+                <View style={{alignItems: 'center', height: "100%"}}>
                     <Text style={styles.question}>
                         {questions[currentQuestion].question}
                     </Text>
@@ -102,8 +147,8 @@ const Lesson = (props) => {
                         progress={timeLeft / 10}
                         size={30}
                         thickness={15}
-                        color= {COLORS.turkishRed}
-                        unfilledColor= {COLORS.turkishRedAlt}
+                        color={timerFrozen ? COLORS.gray : props.primary} // Change color if timer is frozen
+                        unfilledColor={timerFrozen ? COLORS.gray : props.secondary}
                         borderWidth={0}
                         showsText={false}
                         style={{ marginBottom: 0 }}
