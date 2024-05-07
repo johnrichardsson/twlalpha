@@ -85,7 +85,7 @@ export const Turkish1aQ = [
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-u.mp3",
-        options: ["u", "e", "ı", "o"],
+        options: ["u", "a", "ı", "o"],
         correctAnswer: "u",
         qType: 'listening'
     },
