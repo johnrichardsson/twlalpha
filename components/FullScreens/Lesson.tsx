@@ -15,6 +15,7 @@ const Lesson = (props) => {
     const [showResultModal, setShowResultModal] = useState(false);
     const [resultModalContent, setResultModalContent] = useState('');
     const [timerFrozen, setTimerFrozen] = useState(false);
+    const [timeBonusEarned, setTimeBonusEarned] = useState(false);
 
     useEffect(() => {
         if (!timerFrozen) {
@@ -53,12 +54,16 @@ const Lesson = (props) => {
     const handleAnswer = (selectedOption) => {
         const correctAnswer = questions[currentQuestion].correctAnswer;
         const isCorrect = selectedOption === correctAnswer;
+        const timeBonus = timeLeft > 0 ? 25 : 0;
+        let newScore = isCorrect ? 50 : 0;
 
         if (isCorrect) {
-            setScore(score + 1);
-            setResultModalContent('Correct!');
+            newScore += timeBonus;
+            setResultModalContent(`Correct! (+50)`);
             setShowResultModal(true);
             setTimerFrozen(true);
+            setScore(score + newScore);
+            setTimeBonusEarned(timeBonus > 0);
         } else {
             setResultModalContent(`Wrong! The correct answer is: ${correctAnswer}`);
             setShowResultModal(true);
@@ -115,7 +120,10 @@ const Lesson = (props) => {
                     setShowResultModal(false);
                     setTimerFrozen(false); // Clear the timer freeze
                     setTimeLeft(10);
+                    setTimeBonusEarned(false);
                 }}
+                
+            timeBonusEarned={timeBonusEarned}
             />
             {quizCompleted ? (
                 <View>
