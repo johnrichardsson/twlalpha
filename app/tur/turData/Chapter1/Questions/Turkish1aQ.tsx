@@ -4,97 +4,98 @@ export const Turkish1aQ = [
         media: "http://app.worldlexicon.org/src/audio/tur/tur-a.mp3",
         options: ["a", "e", "u", "o"],
         correctAnswer: "a",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-b.mp3",
         options: ["b", "p", "t", "v"],
         correctAnswer: "b",
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-d.mp3",
         options: ["d", "t", "j", "l"],
         correctAnswer: "d",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-e.mp3",
         options: ["e", "i", "ö", "u"],
         correctAnswer: "e",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-f.mp3",
         options: ["f", "v", "b", "p"],
         correctAnswer: "f",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-g.mp3",
         options: ["g", "k", "j", "c"],
         correctAnswer: "g",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-h.mp3",
         options: ["h", "c", "t", "p"],
         correctAnswer: "h",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-i.mp3",
         options: ["i", "u", "e", "ü"],
         correctAnswer: "i",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-iu.mp3",
         options: ["ı", "u", "a", "ü"],
         correctAnswer: "ı",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-k.mp3",
         options: ["k", "g", "ğ", "c"],
         correctAnswer: "k",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-o.mp3",
         options: ["o", "u", "ö", "ı"],
         correctAnswer: "o",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-oe.mp3",
         options: ["ö", "u", "e", "i"],
         correctAnswer: "ö",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-u.mp3",
-        options: ["u", "e", "ı", "o"],
+        options: ["u", "a", "ı", "o"],
         correctAnswer: "u",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-ue.mp3",
         options: ["ü", "u", "ı", "o"],
         correctAnswer: "ü",
-        qType: 'listening'
+        qType: 'listening-multi'
     },
 ];
 

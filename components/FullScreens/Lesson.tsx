@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image, ScrollView} from 'react-native';
 import {Audio} from 'expo-av'
-import { Circle } from 'react-native-progress';
-import { COLORS } from '../../constants';
-import { Result } from '..';
+
+import { Result, ListeningMulti } from '..';
+import { lessonstyles } from '../../data';
 
 const Lesson = (props) => {
     const { questions } = props;
@@ -100,11 +100,11 @@ const Lesson = (props) => {
 
     const displayAnswers = questions.map((question, index) => (
         <View key={index}>
-            <Text style={styles.question}>
+            <Text style={lessonstyles.question}>
                 Question {index + 1}:
                 {question.question}
             </Text>
-            <Text style={styles.correctAnswer}>
+            <Text style={lessonstyles.correctAnswer}>
                 Correct Answer:
                 {question.correctAnswer}
             </Text>
@@ -112,7 +112,7 @@ const Lesson = (props) => {
     ));
 
     return (
-        <View style={styles.container}>
+        <View style={lessonstyles.container}>
             <Result
                 visible={showResultModal}
                 result={resultModalContent}
@@ -129,119 +129,39 @@ const Lesson = (props) => {
                 <View>
                     <View style = {{height: '75%'}}>
                     <ScrollView>
-                    <Text style={styles.score}>
+                    <Text style={lessonstyles.score}>
                         Your Score: {score}
                     </Text>
-                    <Text style={styles.question}>
+                    <Text style={lessonstyles.question}>
                         Questions and Answers:
                     </Text>
                     {displayAnswers}
                     </ScrollView>
                     </View>
                     <TouchableOpacity
-                    style={styles.retestButton}
+                    style={lessonstyles.retestButton}
                     onPress={handleRetest}>
-                    <Text style={styles.buttonText}>
+                    <Text style={lessonstyles.buttonText}>
                         Retest
                     </Text>
                     </TouchableOpacity>
                 </View>
             ) : (
-                <View style={{alignItems: 'center', height: "100%"}}>
-                    <Text style={styles.question}>
-                        {questions[currentQuestion].question}
-                    </Text>
-                    <Circle
-                        progress={timeLeft / 10}
-                        size={30}
-                        thickness={15}
-                        color={timerFrozen ? COLORS.gray : props.primary} // Change color if timer is frozen
-                        unfilledColor={timerFrozen ? COLORS.gray : props.secondary}
-                        borderWidth={0}
-                        showsText={false}
-                        style={{ marginBottom: 0 }}
-                    />
-                    <Text style = {{marginBottom: 10}}> BONUS </Text>
-                    <View style = {{width: '100%', alignItems: "center", height: 150}}>
-                        <TouchableOpacity style = {{alignItems:'center', justifyContent: 'center', width: 100, height: 100, borderRadius: 25, marginBottom: 30, backgroundColor: "lightgrey"}} onPress={playSound}>
-                                <Image
-                                style = {{width: 64, height: 50}} 
-                                source = {require('../../../twlalpha/assets/images/audio.png')}
-                                />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.optionsContainer}>
-                    {questions[currentQuestion].options.map((option, index) => (
-                        <TouchableOpacity
-                            key={index}
-                            style={styles.option}
-                            onPress={() => handleAnswer(option)}
-                        >
-                            <Text style={styles.buttonText}>
-                                {option}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
-                    </View>
-                </View>
+        <View>
+            {questions[currentQuestion].qType === 'listening-multi' && <ListeningMulti 
+            questions={questions}
+            currentQuestion={currentQuestion}
+            timeLeft={timeLeft}
+            timerFrozen={timerFrozen}
+            handleAnswer={handleAnswer}
+            playSound={playSound} 
+            primary={props.primary}
+            secondary={props.secondary}
+            />}
+        </View>
             )}
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-    },
-    question: {
-        color: 'black',
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    option: {
-        width: '48%',
-        marginVertical: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'lightgray',
-        borderRadius: 8,
-        paddingVertical: 15,
-        paddingHorizontal: 10,
-    },
-    optionsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between',
-        width: '90%',
-        marginTop: 20,
-    },
-    buttonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    score: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginBottom: 20,
-    },
-    retestButton: {
-        backgroundColor: 'blue',
-        padding: 10,
-        alignItems: 'center',
-    },
-    timer: {
-        fontSize: 11,
-        fontWeight: 'bold',
-        backgroundColor: 'yellow',
-        paddingVertical: 11,
-        marginRight: 120,
-        borderRadius: 12,
-    },
-    correctAnswer: {
-        color: 'green',
-    },
-});
 
 export default Lesson;

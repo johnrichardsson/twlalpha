@@ -12,7 +12,7 @@ const Turkish1a = () => {
                     </Text>
                 </View>
                 <View>
-                <Lesson questions= {shuffledTurkish1aQ} primary= {COLORS.turkishRed} secondary = {COLORS.turkishRedAlt}/>
+                    <Lesson questions= {shuffledTurkish1aQ} primary= {COLORS.turkishRed} secondary = {COLORS.turkishRedAlt}/>
                 </View>
         </SafeAreaView>
     );
