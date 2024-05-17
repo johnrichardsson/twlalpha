@@ -97,11 +97,66 @@ export const Turkish1aQ = [
         correctAnswer: "ü",
         qType: 'listening-multi'
     },
+    {
+        question: "Match the letters to the sounds:",
+        pairs: [
+            ["http://app.worldlexicon.org/src/audio/tur/tur-a.mp3", "a"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-e.mp3", "e"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-i.mp3", "i"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-u.mp3", "u"],
+            
+        ],
+        qType: 'listening-matching',
+    },
+    {
+        question: "Match the letters to the sounds:",
+        pairs: [
+            ["http://app.worldlexicon.org/src/audio/tur/tur-d.mp3", "d"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-b.mp3", "b"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-k.mp3", "k"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-g.mp3", "g"],
+            
+        ],
+        qType: 'listening-matching',
+    },
+    {
+        question: "Match the letters to the sounds:",
+        pairs: [
+            ["http://app.worldlexicon.org/src/audio/tur/tur-f.mp3", "f"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-h.mp3", "h"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-b.mp3", "b"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-e.mp3", "e"],
+            
+        ],
+        qType: 'listening-matching',
+    },
+    {
+        question: "Match the letters to the sounds:",
+        pairs: [
+            ["http://app.worldlexicon.org/src/audio/tur/tur-oe.mp3", "ö"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-ue.mp3", "ü"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-iu.mp3", "ı"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-o.mp3", "o"],
+            
+        ],
+        qType: 'listening-matching',
+    },
+    {
+        question: "Match the letters to the sounds:",
+        pairs: [
+            ["http://app.worldlexicon.org/src/audio/tur/tur-k.mp3", "k"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-b.mp3", "b"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-g.mp3", "g"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-f.mp3", "f"],
+            
+        ],
+        qType: 'listening-matching',
+    },
 ];
 
 
 
-export const shuffleArray = (array) => {
+const shuffleArray = (array) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -111,14 +166,15 @@ export const shuffleArray = (array) => {
 };
 
 const shuffleOptions = (questions) => {
-    const shuffledQuestions = questions.map((question) => {
-        // Shuffle the options array for each question
-        const shuffledOptions = shuffleArray(question.options);
-        // Return the question with shuffled options
-        return { ...question, options: shuffledOptions };
+    return questions.map((question) => {
+        if (question.qType === 'listening-multi') {
+            return { ...question, options: shuffleArray(question.options) };
+        } else if (question.qType === 'listening-matching') {
+            return { ...question, pairs: shuffleArray(question.pairs) };
+        } else {
+            return question; // Handle other question types if needed
+        }
     });
-    return shuffledQuestions;
 };
-
 
 export const shuffledTurkish1aQ = shuffleArray(shuffleOptions(Turkish1aQ));

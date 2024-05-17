@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Image, ScrollView} from 'react-native';
 import {Audio} from 'expo-av'
 
-import { Result, ListeningMulti } from '..';
+import { Result, ListeningMulti, ListeningMatching } from '..';
 import { lessonstyles } from '../../data';
 
 const Lesson = (props) => {
@@ -49,7 +49,26 @@ const Lesson = (props) => {
 
         return () => clearInterval(timer);
     }, [currentQuestion, quizCompleted]);
+
+    const playSound = async (questionType, questions, currentQuestion, pairUri = null) => {
+        try {
+            const uri = questionType === 'listening-matching' && pairUri
+                ? pairUri
+                : questions[currentQuestion]?.media;
     
+            if (!uri) {
+                throw new Error("Invalid URI");
+            }
+    
+            const { sound } = await Audio.Sound.createAsync(
+                { uri },
+                { shouldPlay: true }
+            );
+            await sound.playAsync();  // This line ensures the sound actually plays
+        } catch (error) {
+            console.log('Error playing sound: ', error);
+        }
+    };
 
     const handleAnswer = (selectedOption) => {
         const correctAnswer = questions[currentQuestion].correctAnswer;
@@ -79,6 +98,32 @@ const Lesson = (props) => {
         }
     };
 
+    const handleMatch = (selectedQuestion, selectedAnswer) => {
+        const { pairs } = questions[currentQuestion];
+        const matchedPair = pairs.find(pair => pair[0] === selectedQuestion);
+    
+        if (!matchedPair) {
+            console.error('No matching question found for:', selectedQuestion);
+            return;
+        }
+    
+        if (matchedPair[1] === selectedAnswer) {
+            console.log('Correct match!');
+        } else {
+            console.log('Incorrect match!');
+        }
+    };
+    const [selectedOptions, setSelectedOptions] = useState({});
+
+    const toggleSelectOption = (pair, option) => {
+        const selected = selectedOptions[pair] === option ? null : option;
+        setSelectedOptions({ ...selectedOptions, [pair]: selected });
+
+        if (selected) {
+            handleAnswer(option);
+        }
+    };
+
     const handleRetest = () => {
         setCurrentQuestion(0);
         setScore(0);
@@ -86,16 +131,7 @@ const Lesson = (props) => {
     };
 
 
-    const playSound = async () => {
-      try {
-        const { sound } = await Audio.Sound.createAsync(
-          { uri: questions[currentQuestion].media } ,
-          { shouldPlay: true }
-        );
-      } catch (error) {
-        console.log('Error playing sound: ', error);
-      }
-    };
+
 
 
     const displayAnswers = questions.map((question, index) => (
@@ -149,14 +185,26 @@ const Lesson = (props) => {
             ) : (
         <View>
             {questions[currentQuestion].qType === 'listening-multi' && <ListeningMulti 
-            questions={questions}
-            currentQuestion={currentQuestion}
-            timeLeft={timeLeft}
-            timerFrozen={timerFrozen}
-            handleAnswer={handleAnswer}
-            playSound={playSound} 
-            primary={props.primary}
-            secondary={props.secondary}
+                questions={questions}
+                currentQuestion={currentQuestion}
+                timeLeft={timeLeft}
+                timerFrozen={timerFrozen}
+                handleAnswer={handleAnswer}
+                playSound={(pairUri) => playSound('listening-multi', questions, currentQuestion)}
+                primary={props.primary}
+                secondary={props.secondary}
+            />}
+            {questions[currentQuestion].qType === 'listening-matching' && <ListeningMatching
+                questions={questions}
+                currentQuestion={currentQuestion}
+                timeLeft={timeLeft}
+                timerFrozen={timerFrozen}
+                handleMatch={handleMatch}
+                toggleSelectOption={toggleSelectOption}
+                selectedOptions={selectedOptions}
+                playSound={(pairUri) => playSound('listening-matching', questions, currentQuestion, pairUri)}
+                primary={props.primary}
+                secondary={props.secondary}
             />}
         </View>
             )}
