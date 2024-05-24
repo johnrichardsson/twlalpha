@@ -1,8 +1,7 @@
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const ResultModal = ({ visible, result, onClose, timeBonusEarned }) => {
-    const timeBonusText = timeBonusEarned ? 'Time Bonus: (+25)' : '';
+const Result = ({ visible, result, onClose, baseScore, bonusScore }) => {
     return (
         <Modal
             visible={visible}
@@ -13,7 +12,8 @@ const ResultModal = ({ visible, result, onClose, timeBonusEarned }) => {
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     <Text style={styles.resultText}>{result}</Text>
-                    <Text style={styles.resultText}>{timeBonusText}</Text>
+                    <Text style={styles.resultText}>Base Score: {baseScore}</Text>
+                    <Text style={styles.resultText}>Time Bonus: {bonusScore}</Text>
                     <TouchableOpacity style={styles.closeButton} onPress={onClose}>
                         <Text style={styles.closeButtonText}>Close</Text>
                     </TouchableOpacity>
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ResultModal;
+export default Result;
