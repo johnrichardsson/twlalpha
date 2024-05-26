@@ -20,9 +20,10 @@ const Lesson = (props) => {
     const [matchedPairs, setMatchedPairs] = useState([]); // Track matched pairs
     const [selectedOptions, setSelectedOptions] = useState({});
     const [leftSideSelected, setLeftSideSelected] = useState(null); // Track the selected left side option
-    const [allMatchesCorrect, setAllMatchesCorrect] = useState(false); // Track if all matches are correct
     const [baseScore, setBaseScore] = useState(0);
     const [bonusScore, setBonusScore] = useState(0);
+    const [calculatedBaseScore, setCalculatedBaseScore] = useState(0);
+    const [calculatedBonusScore, setCalculatedBonusScore] = useState(0);
 
     useEffect(() => {
         if (!timerFrozen) {
@@ -42,17 +43,10 @@ const Lesson = (props) => {
     useEffect(() => {
         setTimeLeft(10); // Reset timer to 10 seconds for each new question
         setMatchedPairs([]); // Reset matched pairs for new question
+        setBaseScore(0); // Reset base score for new question
+        setCalculatedBaseScore(0); // Reset calculated base score for new question
+        setCorrectMatches({}); // Reset correct matches for new question
     }, [currentQuestion]);
-
-    useEffect(() => {
-        // Check if currentQuestion is defined and has pairs property
-        if (questions[currentQuestion] && questions[currentQuestion].pairs) {
-            // Check if all pairs are correctly matched
-            if (Object.keys(correctMatches).length === questions[currentQuestion].pairs.length) {
-                setAllMatchesCorrect(true);
-            }
-        }
-    }, [correctMatches, questions, currentQuestion]);
 
     const playSound = async (questionType, questions, currentQuestion, pairUri = null) => {
         try {
@@ -74,38 +68,34 @@ const Lesson = (props) => {
         }
     };
 
-    const handleAnswer = (isCorrect, correctAnswer = null, points = 0) => {
-        const timeBonus = timeLeft > 0 ? 25 : 0;
-        let calculatedBaseScore = 0;
+    const handleAnswer = (isCorrect, correctAnswer = null, points = 0, allMatchesCorrect = false) => {
+        let calculatedBaseScore = points;
         let calculatedBonusScore = 0;
-    
-        if (questions[currentQuestion].qType === 'listening-multi') {
-            calculatedBaseScore = isCorrect ? 50 : 0;
-            calculatedBonusScore = isCorrect ? timeBonus : 0;
-        } else if (questions[currentQuestion].qType === 'listening-matching') {
-            calculatedBaseScore = points;
-            calculatedBonusScore = timeBonus;
+
+        if (questions[currentQuestion].qType === 'listening-multi' && timeLeft > 0) {
+            calculatedBonusScore = 25;
+        } else if (allMatchesCorrect) {
+            calculatedBonusScore = timeLeft > 0 ? 25 : 0;
         }
-    
+
         setBaseScore(calculatedBaseScore);
         setBonusScore(calculatedBonusScore);
-    
+        setCalculatedBaseScore(calculatedBaseScore);  // Set calculated base score
+        setCalculatedBonusScore(calculatedBonusScore);  // Set calculated bonus score
+
         if (isCorrect) {
             setResultModalContent(`Correct!`);
-            setScore(score + calculatedBaseScore + calculatedBonusScore);
-            setTimeBonusEarned(timeBonus > 0);
+            setScore(prevScore => prevScore + calculatedBaseScore + calculatedBonusScore);
+            setTimeBonusEarned(calculatedBonusScore > 0);
         } else {
             setResultModalContent(`Wrong! The correct answer is: ${correctAnswer}`);
+            if (questions[currentQuestion].qType === 'listening-multi')
+            setCalculatedBaseScore(0)
+            setCalculatedBonusScore(0)
         }
-    
+
         setShowResultModal(true);
         setTimerFrozen(true);
-    
-        if (currentQuestion < questions.length - 1) {
-            setCurrentQuestion(currentQuestion + 1);
-        } else {
-            setQuizCompleted(true);
-        }
     };
 
     const handleMatch = (selectedQuestion, selectedAnswer) => {
@@ -123,14 +113,16 @@ const Lesson = (props) => {
             setScore(prevScore => prevScore + points); // Increment score by 25 for each correct match
             setMatchedPairs(prevMatchedPairs => [...prevMatchedPairs, selectedQuestion]); // Add to matched pairs
             setCorrectMatches(prevCorrectMatches => ({ ...prevCorrectMatches, [selectedQuestion]: true }));
+            setBaseScore(prevBaseScore => prevBaseScore + points); // Increment base score for each correct match
+            setCalculatedBaseScore(prevCalculatedBaseScore => prevCalculatedBaseScore + points); // Increment calculated base score for each correct match
             setLeftSideSelected(null); // Reset the left side selection
 
             // Check if all pairs have been matched correctly
             if (matchedPairs.length + 1 === pairs.length) {
-                setResultModalContent(`All matches correct! Total points: ${points * pairs.length}`);
+                setResultModalContent(`All matches correct!`);
                 setShowResultModal(true);
                 setTimerFrozen(true);
-                handleAnswer(true, null, points * pairs.length); // Call handleAnswer when all matches are correct
+                handleAnswer(true, null, calculatedBaseScore, true); // Pass the correct base score
             }
         } else {
             console.log('Incorrect match!');
@@ -138,7 +130,7 @@ const Lesson = (props) => {
             setShowResultModal(true);
             setTimerFrozen(true);
             setLeftSideSelected(null); // Reset the left side selection on incorrect match
-            handleAnswer(false, matchedPair[1]); // Call handleAnswer on incorrect match
+            handleAnswer(false, matchedPair[1], calculatedBaseScore, false);
         }
     };
 
@@ -170,7 +162,7 @@ const Lesson = (props) => {
                 setShowResultModal(true);
                 setTimerFrozen(true);
                 setLeftSideSelected(null); // Reset the left side selection on incorrect match
-                handleAnswer(false, currentQuestionData.pairs.find(pair => pair[0] === leftSideSelected)?.[1]);
+                handleAnswer(false, currentQuestionData.pairs.find(pair => pair[0] === leftSideSelected)?.[1], calculatedBaseScore, false);
             }
         } else {
             Alert.alert("Choose from the left side first", "Please choose an audio from the left side first.");
@@ -196,6 +188,8 @@ const Lesson = (props) => {
         setQuizCompleted(false);
         setCorrectMatches({});
         setMatchedPairs([]);
+        setBaseScore(0); // Reset the base score
+        setCalculatedBaseScore(0); // Reset the calculated base score
     };
 
     const displayAnswers = questions.map((question, index) => (
@@ -221,9 +215,16 @@ const Lesson = (props) => {
                     setTimerFrozen(false); // Clear the timer freeze
                     setTimeLeft(10);
                     setTimeBonusEarned(false);
+                    if (currentQuestion < questions.length - 1) {
+                        setCurrentQuestion(prevQuestion => prevQuestion + 1);
+                    } else {
+                        setQuizCompleted(true);
+                    }
                 }}
                 baseScore={baseScore}
                 bonusScore={bonusScore}
+                calculatedBaseScore={calculatedBaseScore}
+                calculatedBonusScore={calculatedBonusScore}
             />
             {quizCompleted ? (
                 <View>
@@ -253,7 +254,7 @@ const Lesson = (props) => {
                         currentQuestion={currentQuestion}
                         timeLeft={timeLeft}
                         timerFrozen={timerFrozen}
-                        handleAnswer={(selectedOption) => handleAnswer(selectedOption === questions[currentQuestion].correctAnswer, questions[currentQuestion].correctAnswer)}
+                        handleAnswer={(selectedOption) => handleAnswer(selectedOption === questions[currentQuestion].correctAnswer, questions[currentQuestion].correctAnswer, 50)}
                         playSound={(pairUri) => playSound('listening-multi', questions, currentQuestion)}
                         primary={props.primary}
                         secondary={props.secondary}
