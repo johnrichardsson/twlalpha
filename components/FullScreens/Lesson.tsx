@@ -89,9 +89,10 @@ const Lesson = (props) => {
             setTimeBonusEarned(calculatedBonusScore > 0);
         } else {
             setResultModalContent(`Wrong! The correct answer is: ${correctAnswer}`);
-            if (questions[currentQuestion].qType === 'listening-multi')
-            setCalculatedBaseScore(0)
-            setCalculatedBonusScore(0)
+            if (questions[currentQuestion].qType === 'listening-multi') {
+                setCalculatedBaseScore(0);
+                setCalculatedBonusScore(0);
+            }
         }
 
         setShowResultModal(true);
