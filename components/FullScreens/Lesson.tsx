@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Alert, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Audio } from 'expo-av';
 
-import { Result, ListeningMulti, ListeningMatching } from '..';
+import { Result, ListeningMulti, ListeningMatching, ListeningTyping } from '..';
 import { lessonstyles } from '../../data';
 
 const Lesson = (props) => {
@@ -89,7 +89,7 @@ const Lesson = (props) => {
             setTimeBonusEarned(calculatedBonusScore > 0);
         } else {
             setResultModalContent(`Wrong! The correct answer is: ${correctAnswer}`);
-            if (questions[currentQuestion].qType === 'listening-multi') {
+            if (questions[currentQuestion].qType === 'listening-multi' || questions[currentQuestion].qType === 'listening-typing') {
                 setCalculatedBaseScore(0);
                 setCalculatedBonusScore(0);
             }
@@ -272,6 +272,14 @@ const Lesson = (props) => {
                         leftSideSelected={leftSideSelected}
                         selectedOptions={selectedOptions}
                         playSound={(pairUri) => playSound('listening-matching', questions, currentQuestion, pairUri)}
+                        primary={props.primary}
+                        secondary={props.secondary}
+                    />}
+                    {questions[currentQuestion].qType === 'listening-typing' && <ListeningTyping
+                        questions={questions}
+                        currentQuestion={currentQuestion}
+                        handleAnswer={(typedAnswer) => handleAnswer(typedAnswer === questions[currentQuestion].correctAnswer, questions[currentQuestion].correctAnswer, 50)}
+                        playSound={(pairUri) => playSound('listening-typing', questions, currentQuestion)}
                         primary={props.primary}
                         secondary={props.secondary}
                     />}

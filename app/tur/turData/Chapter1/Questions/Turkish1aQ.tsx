@@ -152,6 +152,101 @@ export const Turkish1aQ = [
         ],
         qType: 'listening-matching',
     },
+    {
+        question: "Match the letters to the sounds:",
+        pairs: [
+            ["http://app.worldlexicon.org/src/audio/tur/tur-a.mp3", "a"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-k.mp3", "k"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-h.mp3", "h"],
+            ["http://app.worldlexicon.org/src/audio/tur/tur-iu.mp3", "ı"],
+            
+        ],
+        qType: 'listening-matching',
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-a.mp3',
+        correctAnswer: 'a'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-b.mp3',
+        correctAnswer: 'b'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-d.mp3',
+        correctAnswer: 'd'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-e.mp3',
+        correctAnswer: 'e'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-f.mp3',
+        correctAnswer: 'f'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-g.mp3',
+        correctAnswer: 'g'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-h.mp3',
+        correctAnswer: 'h'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-i.mp3',
+        correctAnswer: 'i'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-iu.mp3',
+        correctAnswer: 'ı'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-k.mp3',
+        correctAnswer: 'k'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-o.mp3',
+        correctAnswer: 'o'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-oe.mp3',
+        correctAnswer: 'ö'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-u.mp3',
+        correctAnswer: 'u'
+    },
+    {
+        qType: 'listening-typing',
+        question: 'Type the letter you hear!',
+        media: 'http://app.worldlexicon.org/src/audio/tur/tur-ue.mp3',
+        correctAnswer: 'ü'
+    },
 ];
 
 

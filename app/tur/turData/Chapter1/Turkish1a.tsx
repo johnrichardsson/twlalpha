@@ -4,7 +4,7 @@ import { COLORS } from '../../../../constants';
 import { shuffledTurkish1aQ } from './Questions/Turkish1aQ';
  
 const Turkish1a = () => {
-    const first15Questions1a = shuffledTurkish1aQ.slice(0, 15);
+    const turkish1a15q = shuffledTurkish1aQ.slice(0, 15);
 
     return (
         <SafeAreaView style={{ height: '100%', alignItems: 'center' }}>
@@ -14,7 +14,7 @@ const Turkish1a = () => {
                     </Text>
                 </View>
                 <View>
-                    <Lesson questions= {first15Questions1a} primary= {COLORS.turkishRed} secondary = {COLORS.turkishRedAlt}/>
+                    <Lesson questions= {turkish1a15q} primary= {COLORS.turkishRed} secondary = {COLORS.turkishRedAlt}/>
                 </View>
         </SafeAreaView>
     );

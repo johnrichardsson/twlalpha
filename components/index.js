@@ -6,5 +6,6 @@ import Result from "../components/Widgets/Result.tsx"
 import ScreenHeaderBtn from "../components/Widgets/ScreenHeaderBtn.tsx"
 import ListeningMulti from "./Cards/LessonCards/ListeningMulti.tsx"
 import ListeningMatching from "./Cards/LessonCards/ListeningMatching.tsx"
+import ListeningTyping from "./Cards/LessonCards/ListeningTyping.tsx"
 
-export { CourseIcon, Lesson, LevelPlaque, LessonCard, Result, ScreenHeaderBtn, ListeningMulti, ListeningMatching }
+export { CourseIcon, Lesson, LevelPlaque, LessonCard, Result, ScreenHeaderBtn, ListeningMulti, ListeningMatching, ListeningTyping }

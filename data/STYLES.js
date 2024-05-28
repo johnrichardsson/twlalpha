@@ -53,4 +53,13 @@ export const lessonstyles = StyleSheet.create({
     correctAnswer: {
         color: 'green',
     },
+    input: {
+        width: '80%',
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        marginVertical: 20,
+        borderRadius: 8,
+    },
 });
