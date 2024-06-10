@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { COLORS } from '../../../constants';
+import { Circle } from 'react-native-progress';
 
 const ListeningTyping = (props) => {
     const {
@@ -8,7 +10,9 @@ const ListeningTyping = (props) => {
         playSound,
         handleAnswer,
         primary,
-        secondary
+        secondary,
+        timeLeft,
+        timerFrozen,
     } = props;
 
     const [typedAnswer, setTypedAnswer] = useState('');
@@ -20,6 +24,17 @@ const ListeningTyping = (props) => {
     return (
         <View style={styles.container}>
             <Text style={styles.question}>{questions[currentQuestion].question}</Text>
+            <Circle
+                progress={timeLeft / 10}
+                size={30}
+                thickness={15}
+                color={timerFrozen ? COLORS.gray : props.primary}
+                unfilledColor={timerFrozen ? COLORS.gray : props.secondary}
+                borderWidth={0}
+                showsText={false}
+                style={{ marginBottom: 0 }}
+            />
+            <Text style={{ marginBottom: 10 }}> BONUS </Text>
             <TouchableOpacity
                     style={{ alignItems: 'center', justifyContent: 'center', width: 100, height: 100, borderRadius: 25, marginBottom: 30, backgroundColor: 'lightgrey' }}
                     onPress={() => playSound(questions[currentQuestion].media)}>

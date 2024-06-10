@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Alert, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Audio } from 'expo-av';
 
-import { Result, ListeningMulti, ListeningMatching, ListeningTyping } from '..';
+import { Result, ListeningMulti, ListeningMatching, ListeningTyping, PictureMulti } from '..';
 import { lessonstyles } from '../../data';
 
 const Lesson = (props) => {
@@ -74,8 +74,16 @@ const Lesson = (props) => {
 
         if (questions[currentQuestion].qType === 'listening-multi' && timeLeft > 0) {
             calculatedBonusScore = 25;
+        }
+        
+        if (questions[currentQuestion].qType === 'listening-typing' && timeLeft > 0) {
+            calculatedBonusScore = 25;
+        } 
+        
+        if (questions[currentQuestion].qType === 'picture-multi' && timeLeft > 0) {
+            calculatedBonusScore = 25;
         } else if (allMatchesCorrect) {
-            calculatedBonusScore = timeLeft > 0 ? 25 : 0;
+            calculatedBonusScore = timeLeft > 0 ? 50 : 0;
         }
 
         setBaseScore(calculatedBaseScore);
@@ -89,7 +97,15 @@ const Lesson = (props) => {
             setTimeBonusEarned(calculatedBonusScore > 0);
         } else {
             setResultModalContent(`Wrong! The correct answer is: ${correctAnswer}`);
-            if (questions[currentQuestion].qType === 'listening-multi' || questions[currentQuestion].qType === 'listening-typing') {
+            if (questions[currentQuestion].qType === 'listening-multi') {
+                setCalculatedBaseScore(0);
+                setCalculatedBonusScore(0);
+            }
+            if (questions[currentQuestion].qType === 'listening-typing') {
+                setCalculatedBaseScore(0);
+                setCalculatedBonusScore(0);
+            }
+            if (questions[currentQuestion].qType === 'picture-multi') {
                 setCalculatedBaseScore(0);
                 setCalculatedBonusScore(0);
             }
@@ -278,8 +294,19 @@ const Lesson = (props) => {
                     {questions[currentQuestion].qType === 'listening-typing' && <ListeningTyping
                         questions={questions}
                         currentQuestion={currentQuestion}
-                        handleAnswer={(typedAnswer) => handleAnswer(typedAnswer === questions[currentQuestion].correctAnswer, questions[currentQuestion].correctAnswer, 50)}
+                        timeLeft={timeLeft}
+                        timerFrozen={timerFrozen}
+                        handleAnswer={(typedAnswer) => handleAnswer(typedAnswer === questions[currentQuestion].correctAnswer, questions[currentQuestion].correctAnswer, typedAnswer === questions[currentQuestion].correctAnswer ? 50 : 0)}
                         playSound={(pairUri) => playSound('listening-typing', questions, currentQuestion)}
+                        primary={props.primary}
+                        secondary={props.secondary}
+                    />}
+                    {questions[currentQuestion].qType === 'picture-multi' && <PictureMulti
+                        questions={questions}
+                        currentQuestion={currentQuestion}
+                        timeLeft={timeLeft}
+                        timerFrozen={timerFrozen}
+                        handleAnswer={(isCorrect, correctAnswer, points) => handleAnswer(isCorrect, correctAnswer, points)}
                         primary={props.primary}
                         secondary={props.secondary}
                     />}
