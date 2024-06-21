@@ -1,46 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { COLORS } from '../../../constants';
 import { Circle } from 'react-native-progress';
+import { COLORS } from '../../../constants';
 
-const PictureMulti = (props) => {
-    const {
-        currentQuestion,
-        questions,
-        handleAnswer,
-        primary,
-        secondary,
-        timeLeft,
-        timerFrozen,
-    } = props;
-
+const ImageMulti = ({ currentQuestion, questions, options, handleAnswer, playSound, primary, secondary, timeLeft, timerFrozen }) => {
     const [selectedOption, setSelectedOption] = useState(null);
-    const [shuffledOptions, setShuffledOptions] = useState([]);
-
-    // Function to shuffle an array
-const shuffleArray = (array) => {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-    }
-    return shuffledArray;
-};
-
-    useEffect(() => {
-        // Shuffle options when the current question changes
-        setShuffledOptions(shuffleArray(questions[currentQuestion].options));
-    }, [currentQuestion, questions]);
 
     const handleOptionPress = (option) => {
         setSelectedOption(option);
-        const isCorrect = option.label === questions[currentQuestion].correctAnswer;
-        handleAnswer(isCorrect, questions[currentQuestion].correctAnswer, isCorrect ? 50 : 0);
+        const isCorrect = option === questions.correctAnswer;
+        handleAnswer(isCorrect, questions.correctAnswer, isCorrect ? 50 : 0);
     };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.question}>{questions[currentQuestion].question}</Text>
+            <Text style={styles.question}>{questions.question}</Text>
+            <TouchableOpacity
+            style={{ alignItems: 'center', justifyContent: 'center', width: '90%', borderRadius: 25, marginBottom: 30, backgroundColor: 'lightgrey' }} 
+            onPress={() => playSound(questions[currentQuestion].media)}>
+            <Image
+                source={{ uri: questions.image }}
+                style={styles.image}
+                resizeMode="contain"
+            />
+            </TouchableOpacity>
             <Circle
                 progress={timeLeft / 10}
                 size={30}
@@ -53,7 +36,7 @@ const shuffleArray = (array) => {
             />
             <Text style={{ marginBottom: 10 }}> BONUS </Text>
             <View style={styles.optionsContainer}>
-                {shuffledOptions.map((option, index) => (
+                {options.map((option, index) => (
                     <TouchableOpacity
                         key={index}
                         style={[
@@ -66,12 +49,7 @@ const shuffleArray = (array) => {
                         ]}
                         onPress={() => handleOptionPress(option)}
                     >
-                        <Image
-                            source={{ uri: option.image }}
-                            style={styles.image}
-                            resizeMode="contain"
-                        />
-                        <Text style={styles.label}>              </Text>
+                        <Text style={styles.label}>{option}</Text>
                     </TouchableOpacity>
                 ))}
             </View>
@@ -92,6 +70,11 @@ const styles = StyleSheet.create({
         color: 'black',
         textAlign: 'center',
     },
+    image: {
+        width: '80%',
+        height: 200,
+        marginBottom: 20,
+    },
     optionsContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -105,15 +88,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: '40%', // Ensure the options take half the width of the container
-        height: 180, // Increase height to ensure image and label fit well
-    },
-    image: {
-        width: '100%',
-        height: 120, // Adjust height to ensure image is fully visible
-        borderRadius: 8,
+        height: 60, // Adjust height to ensure options fit well
     },
     label: {
-        marginTop: 5,
         fontSize: 16,
         fontWeight: 'bold',
         color: 'black',
@@ -121,4 +98,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default PictureMulti;
+export default ImageMulti;

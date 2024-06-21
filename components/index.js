@@ -8,5 +8,8 @@ import ListeningMulti from "./Cards/LessonCards/ListeningMulti.tsx"
 import ListeningMatching from "./Cards/LessonCards/ListeningMatching.tsx"
 import ListeningTyping from "./Cards/LessonCards/ListeningTyping.tsx"
 import PictureMulti from "./Cards/LessonCards/PictureMulti.tsx"
+import PictureMatching from "./Cards/LessonCards/PictureMatching.tsx"
+import ImageMulti from "./Cards/LessonCards/ImageMulti.tsx"
+import ImageTyping from "./Cards/LessonCards/ImageTyping.tsx"
 
-export { CourseIcon, Lesson, LevelPlaque, LessonCard, Result, ScreenHeaderBtn, ListeningMulti, ListeningMatching, ListeningTyping, PictureMulti }
+export { CourseIcon, Lesson, LevelPlaque, LessonCard, Result, ScreenHeaderBtn, ListeningMulti, ListeningMatching, ListeningTyping, PictureMulti, ImageMulti, ImageTyping, PictureMatching }

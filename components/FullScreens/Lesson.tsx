@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Alert, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Audio } from 'expo-av';
 
-import { Result, ListeningMulti, ListeningMatching, ListeningTyping, PictureMulti } from '..';
+import { Result, ListeningMulti, ListeningMatching, ListeningTyping, PictureMulti, PictureMatching, ImageTyping, ImageMulti } from '..';
 import { lessonstyles } from '../../data';
 
 const Lesson = (props) => {
-    const { questions } = props;
+    const { questions, primary, secondary } = props;
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
@@ -48,16 +48,8 @@ const Lesson = (props) => {
         setCorrectMatches({}); // Reset correct matches for new question
     }, [currentQuestion]);
 
-    const playSound = async (questionType, questions, currentQuestion, pairUri = null) => {
+    const playSound = async (uri) => {
         try {
-            const uri = questionType === 'listening-matching' && pairUri
-                ? pairUri
-                : questions[currentQuestion]?.media;
-
-            if (!uri) {
-                throw new Error("Invalid URI");
-            }
-
             const { sound } = await Audio.Sound.createAsync(
                 { uri },
                 { shouldPlay: true }
@@ -81,6 +73,10 @@ const Lesson = (props) => {
         } 
         
         if (questions[currentQuestion].qType === 'picture-multi' && timeLeft > 0) {
+            calculatedBonusScore = 25;
+        }
+        
+        if (questions[currentQuestion].qType === 'image-multi' && timeLeft > 0) {
             calculatedBonusScore = 25;
         } else if (allMatchesCorrect) {
             calculatedBonusScore = timeLeft > 0 ? 50 : 0;
@@ -165,7 +161,7 @@ const Lesson = (props) => {
 
         if (side === 'left') {
             setLeftSideSelected(soundUri);
-            playSound('listening-matching', questions, currentQuestion, soundUri); // use soundUri instead of pairUri
+            playSound(soundUri); // use soundUri instead of pairUri
         } else if (side === 'right' && leftSideSelected) {
             const isCorrectMatch = currentQuestionData.pairs.some(
                 pair => pair[0] === leftSideSelected && pair[1] === letter
@@ -229,7 +225,7 @@ const Lesson = (props) => {
                 result={resultModalContent}
                 onClose={() => {
                     setShowResultModal(false);
-                    setTimerFrozen(false); // Clear the timer freeze
+                    setTimerFrozen(false);
                     setTimeLeft(10);
                     setTimeBonusEarned(false);
                     if (currentQuestion < questions.length - 1) {
@@ -272,9 +268,9 @@ const Lesson = (props) => {
                         timeLeft={timeLeft}
                         timerFrozen={timerFrozen}
                         handleAnswer={(selectedOption) => handleAnswer(selectedOption === questions[currentQuestion].correctAnswer, questions[currentQuestion].correctAnswer, 50)}
-                        playSound={(pairUri) => playSound('listening-multi', questions, currentQuestion)}
-                        primary={props.primary}
-                        secondary={props.secondary}
+                        playSound={() => playSound(questions[currentQuestion].media)}
+                        primary={primary}
+                        secondary={secondary}
                     />}
                     {questions[currentQuestion].qType === 'listening-matching' && <ListeningMatching
                         questions={questions}
@@ -287,9 +283,9 @@ const Lesson = (props) => {
                         correctMatches={correctMatches}
                         leftSideSelected={leftSideSelected}
                         selectedOptions={selectedOptions}
-                        playSound={(pairUri) => playSound('listening-matching', questions, currentQuestion, pairUri)}
-                        primary={props.primary}
-                        secondary={props.secondary}
+                        playSound={(pairUri) => playSound(pairUri)}
+                        primary={primary}
+                        secondary={secondary}
                     />}
                     {questions[currentQuestion].qType === 'listening-typing' && <ListeningTyping
                         questions={questions}
@@ -297,9 +293,9 @@ const Lesson = (props) => {
                         timeLeft={timeLeft}
                         timerFrozen={timerFrozen}
                         handleAnswer={(typedAnswer) => handleAnswer(typedAnswer === questions[currentQuestion].correctAnswer, questions[currentQuestion].correctAnswer, typedAnswer === questions[currentQuestion].correctAnswer ? 50 : 0)}
-                        playSound={(pairUri) => playSound('listening-typing', questions, currentQuestion)}
-                        primary={props.primary}
-                        secondary={props.secondary}
+                        playSound={() => playSound(questions[currentQuestion].media)}
+                        primary={primary}
+                        secondary={secondary}
                     />}
                     {questions[currentQuestion].qType === 'picture-multi' && <PictureMulti
                         questions={questions}
@@ -307,8 +303,41 @@ const Lesson = (props) => {
                         timeLeft={timeLeft}
                         timerFrozen={timerFrozen}
                         handleAnswer={(isCorrect, correctAnswer, points) => handleAnswer(isCorrect, correctAnswer, points)}
-                        primary={props.primary}
-                        secondary={props.secondary}
+                        primary={primary}
+                        secondary={secondary}
+                    />}
+                    {questions[currentQuestion].qType === 'picture-matching' && <PictureMatching
+                        questions={questions}
+                        currentQuestion={currentQuestion}
+                        timeLeft={timeLeft}
+                        timerFrozen={timerFrozen}
+                        correctMatches={correctMatches}
+                        selectedOptions={selectedOptions}
+                        leftSideSelected={leftSideSelected}
+                        handleMatchSelection={handleMatchSelection}
+                        primary={primary}
+                        secondary={secondary}
+                    />}
+                    {questions[currentQuestion].qType === 'image-multi' && <ImageMulti
+                        currentQuestion={currentQuestion}
+                        questions={questions[currentQuestion]}
+                        options={questions[currentQuestion].options}
+                        timeLeft={timeLeft}
+                        timerFrozen={timerFrozen}
+                        handleAnswer={(isCorrect, correctAnswer, points) => handleAnswer(isCorrect, correctAnswer, points)}
+                        playSound={() => playSound(questions[currentQuestion].media)}
+                        primary={primary}
+                        secondary={secondary}
+                    />}
+                    {questions[currentQuestion].qType === 'image-typing' && <ImageTyping
+                        currentQuestion={currentQuestion}
+                        questions={questions}
+                        timeLeft={timeLeft}
+                        timerFrozen={timerFrozen}
+                        handleAnswer={(isCorrect, correctAnswer, points) => handleAnswer(isCorrect, correctAnswer, points)}
+                        playSound={() => playSound(questions[currentQuestion].media)}
+                        primary={primary}
+                        secondary={secondary}
                     />}
                 </View>
             )}

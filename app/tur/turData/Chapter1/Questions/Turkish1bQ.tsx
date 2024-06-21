@@ -1,4 +1,4 @@
-export const Turkish1bQ = [
+export const items = [
     {
         question: "Which letter makes this sound?",
         media: "http://app.worldlexicon.org/src/audio/tur/tur-c.mp3",
@@ -296,4 +296,4 @@ const shuffleOptions = (questions) => {
     });
 };
 
-export const shuffledTurkish1bQ = shuffleArray(shuffleOptions(Turkish1bQ));
+export const shuffledTurkish1bQ = shuffleArray(shuffleOptions(items));
