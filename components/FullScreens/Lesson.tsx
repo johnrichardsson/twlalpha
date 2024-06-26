@@ -78,6 +78,10 @@ const Lesson = (props) => {
         
         if (questions[currentQuestion].qType === 'image-multi' && timeLeft > 0) {
             calculatedBonusScore = 25;
+        }
+
+        if (questions[currentQuestion].qType === 'image-typing' && timeLeft > 0) {
+            calculatedBonusScore = 25;
         } else if (allMatchesCorrect) {
             calculatedBonusScore = timeLeft > 0 ? 50 : 0;
         }
@@ -102,6 +106,14 @@ const Lesson = (props) => {
                 setCalculatedBonusScore(0);
             }
             if (questions[currentQuestion].qType === 'picture-multi') {
+                setCalculatedBaseScore(0);
+                setCalculatedBonusScore(0);
+            }
+            if (questions[currentQuestion].qType === 'image-multi') {
+                setCalculatedBaseScore(0);
+                setCalculatedBonusScore(0);
+            }
+            if (questions[currentQuestion].qType === 'image-typing') {
                 setCalculatedBaseScore(0);
                 setCalculatedBonusScore(0);
             }
@@ -191,6 +203,9 @@ const Lesson = (props) => {
 
         // Check if the question type is ListeningMatching before calling handleAnswer
         if (questions[currentQuestion].qType === 'ListeningMatching' && selected) {
+            handleAnswer(option);
+        }
+        if (questions[currentQuestion].qType === 'PictureMatching' && selected) {
             handleAnswer(option);
         }
     };
@@ -314,7 +329,10 @@ const Lesson = (props) => {
                         correctMatches={correctMatches}
                         selectedOptions={selectedOptions}
                         leftSideSelected={leftSideSelected}
+                        handleAnswer = {handleAnswer}
+                        playSound={() => playSound(questions[currentQuestion].media)}
                         handleMatchSelection={handleMatchSelection}
+                        setResultModalContent={setResultModalContent}
                         primary={primary}
                         secondary={secondary}
                     />}
@@ -335,7 +353,7 @@ const Lesson = (props) => {
                         timeLeft={timeLeft}
                         timerFrozen={timerFrozen}
                         handleAnswer={(isCorrect, correctAnswer, points) => handleAnswer(isCorrect, correctAnswer, points)}
-                        playSound={() => playSound(questions[currentQuestion].media)}
+                        playSound={(pairUri) => playSound(pairUri)}
                         primary={primary}
                         secondary={secondary}
                     />}

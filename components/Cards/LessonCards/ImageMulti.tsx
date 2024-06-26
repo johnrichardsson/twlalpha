@@ -16,13 +16,13 @@ const ImageMulti = ({ currentQuestion, questions, options, handleAnswer, playSou
         <View style={styles.container}>
             <Text style={styles.question}>{questions.question}</Text>
             <TouchableOpacity
-            style={{ alignItems: 'center', justifyContent: 'center', width: '90%', borderRadius: 25, marginBottom: 30, backgroundColor: 'lightgrey' }} 
-            onPress={() => playSound(questions[currentQuestion].media)}>
-            <Image
-                source={{ uri: questions.image }}
-                style={styles.image}
-                resizeMode="contain"
-            />
+                style={{ alignItems: 'center', justifyContent: 'center', width: '90%', borderRadius: 25, marginBottom: 30, backgroundColor: 'lightgrey' }}
+                onPress={() => playSound(questions.media)}>
+                <Image
+                    source={{ uri: questions.image }}
+                    style={styles.image}
+                    resizeMode="contain"
+                />
             </TouchableOpacity>
             <Circle
                 progress={timeLeft / 10}
@@ -36,7 +36,7 @@ const ImageMulti = ({ currentQuestion, questions, options, handleAnswer, playSou
             />
             <Text style={{ marginBottom: 10 }}> BONUS </Text>
             <View style={styles.optionsContainer}>
-                {options.map((option, index) => (
+                {questions.options.map((option, index) => (
                     <TouchableOpacity
                         key={index}
                         style={[

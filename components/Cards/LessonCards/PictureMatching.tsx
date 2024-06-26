@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert, StyleSheet } from 'react-native';
 import { Circle } from 'react-native-progress';
 import { lessonstyles } from '../../../data';
 import { COLORS } from '../../../constants';
@@ -19,62 +19,50 @@ const PictureMatching = (props) => {
         timerFrozen,
         questions,
         playSound,
-        correctMatches,
-        selectedOptions,
-        leftSideSelected,
-        handleMatchSelection,
+        handleAnswer, // This handles score updating and showing the result modal
         primary,
         secondary
     } = props;
 
-    if (!questions || questions.length === 0 || currentQuestion === undefined) {
-        return <Text>Loading or invalid questions...</Text>;
-    }
-
-    const question = questions[currentQuestion];
-    if (!question || !question.items) {
-        return <Text>Invalid question data...</Text>;
-    }
-
-    const items = question.items;
-
-    const [shuffledLeftSide, setShuffledLeftSide] = useState([]);
-    const [shuffledRightSide, setShuffledRightSide] = useState([]);
-    const [rightSideMap, setRightSideMap] = useState({});
+    const pairs = questions[currentQuestion].pairs;
+    const [shuffledPairs, setShuffledPairs] = useState([]);
+    const [correctMatches, setCorrectMatches] = useState({});
+    const [selectedLeft, setSelectedLeft] = useState(null);
 
     useEffect(() => {
-        if (items.length > 0) {
-            const pairs = items.map(item => ({ left: item.translated, right: item.image }));
-            const left = pairs.map(pair => pair.left);
-            const right = pairs.map(pair => pair.right);
-            const shuffledLeft = shuffleArray([...left]);
-            const shuffledRight = shuffleArray([...right]);
+        setShuffledPairs(shuffleArray([...pairs]));
+        setCorrectMatches({}); // Reset matches at the beginning of each question
+    }, [pairs, currentQuestion]);
 
-            const rightMap = {};
-            shuffledRight.forEach((item, index) => {
-                rightMap[item] = left[index];
-            });
-
-            setShuffledLeftSide(shuffledLeft);
-            setShuffledRightSide(shuffledRight);
-            setRightSideMap(rightMap);
-        }
-    }, [currentQuestion, items]);
-
-    const handleLeftSelection = (left) => {
-        handleMatchSelection(left, null, 'left');
+    const handleLeftSelection = (id) => {
+        setSelectedLeft(id);
+        playSound(id);
     };
 
-    const handleRightSelection = (right) => {
-        if (rightSideMap[right]) {
-            handleMatchSelection(rightSideMap[right], right, 'right');
+    const handleRightSelection = (id) => {
+        if (selectedLeft) {
+            const leftMatch = shuffledPairs.find(pair => pair.id === selectedLeft);
+            const rightMatch = shuffledPairs.find(pair => pair.id === id);
+            
+            if (leftMatch && rightMatch && leftMatch.id === rightMatch.id) {
+                setCorrectMatches(prev => ({ ...prev, [leftMatch.id]: true }));
+                if (Object.keys(correctMatches).length + 1 === pairs.length) {
+                    // Call handleAnswer when all matches are correct
+                    handleAnswer(true, null, (Object.keys(correctMatches).length + 1) * 25, true); // All correct
+                }
+            } else {
+                // Incorrect match made, calculate score based on correct matches made before error
+                const score = Object.keys(correctMatches).length * 25;
+                handleAnswer(false, leftMatch.left, score, false); // Incorrect match
+            }
+            setSelectedLeft(null); // Reset selection after a match attempt
         }
     };
 
     return (
         <View style={styles.container}>
             <Text style={lessonstyles.question}>
-                {question.question}
+                {questions[currentQuestion]?.question || "Loading question..."}
             </Text>
             <Circle
                 progress={timeLeft / 10}
@@ -87,31 +75,27 @@ const PictureMatching = (props) => {
                 style={{ marginBottom: 20 }}
             />
             <View style={styles.pairsContainer}>
-                {shuffledLeftSide.map((left, index) => (
+                {shuffledPairs.map((pair, index) => (
                     <View key={index} style={styles.pairRow}>
                         <TouchableOpacity
                             style={[
                                 styles.option,
-                                {
-                                    backgroundColor: correctMatches[left] ? secondary : (leftSideSelected === left ? primary : 'lightgrey'),
-                                }
+                                { backgroundColor: correctMatches[pair.id] ? secondary : selectedLeft === pair.id ? primary : 'lightgrey' }
                             ]}
-                            onPress={() => handleLeftSelection(left)}
-                            disabled={correctMatches[left]}
+                            onPress={() => handleLeftSelection(pair.id)}
+                            disabled={correctMatches[pair.id]}
                         >
-                            <Text style={styles.optionText}>{left}</Text>
+                            <Text style={styles.optionText}>{pair.left}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[
                                 styles.option,
-                                {
-                                    backgroundColor: correctMatches[rightSideMap[shuffledRightSide[index]]] ? secondary : (selectedOptions[rightSideMap[shuffledRightSide[index]]] === shuffledRightSide[index] ? primary : 'lightgrey'),
-                                }
+                                { backgroundColor: correctMatches[pair.id] ? secondary : 'lightgrey' }
                             ]}
-                            onPress={() => handleRightSelection(shuffledRightSide[index])}
-                            disabled={correctMatches[rightSideMap[shuffledRightSide[index]]]}
+                            onPress={() => handleRightSelection(pair.id)}
+                            disabled={correctMatches[pair.id] || !selectedLeft}
                         >
-                            <Image style={styles.image} source={{ uri: shuffledRightSide[index] }} resizeMode="contain"/>
+                            <Image style={styles.image} source={{ uri: pair.right }} resizeMode="contain"/>
                         </TouchableOpacity>
                     </View>
                 ))}
@@ -123,34 +107,32 @@ const PictureMatching = (props) => {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        height: '100%',
+        height: '100%'
     },
     pairsContainer: {
-        width: '100%',
+        width: '100%'
     },
     pairRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 20,
-        marginBottom: 10,
+        marginBottom: 10
     },
     option: {
         width: '40%',
         padding: 10,
-        justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 8,
+        borderRadius: 8
     },
     optionText: {
-        textAlign: 'center',
         fontSize: 16,
         fontWeight: 'bold',
-        color: 'black',
+        color: 'black'
     },
     image: {
         width: 100,
-        height: 100,
-    },
+        height: 100
+    }
 });
 
 export default PictureMatching;
