@@ -58,3 +58,6 @@ const ListeningMulti = (props) => {
 };
 
 export default ListeningMulti;
+
+//FUNCTIONS AND STATES ALL IMPORTED!
+//Notes: Change to new generation method

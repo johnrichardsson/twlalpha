@@ -8,20 +8,15 @@ const ImageTyping = (props) => {
         currentQuestion,
         questions,
         handleAnswer,
+        handleSubmit,
         primary,
         secondary,
         timeLeft,
         timerFrozen,
+        typedAnswer,
+        setTypedAnswer,
         playSound,
     } = props;
-
-    const [typedAnswer, setTypedAnswer] = useState('');
-
-    const handleSubmit = () => {
-        const isCorrect = typedAnswer.toLowerCase() === questions[currentQuestion].correctAnswer.toLowerCase();
-        handleAnswer(isCorrect, questions[currentQuestion].correctAnswer, isCorrect ? 50 : 0);
-        setTypedAnswer('');
-    };
 
     return (
         <View style={styles.container}>
@@ -108,3 +103,5 @@ const styles = StyleSheet.create({
 });
 
 export default ImageTyping;
+
+//FUNCTIONS AND STATES ALL IMPORTED!

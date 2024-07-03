@@ -11,11 +11,11 @@ const ListeningTyping = (props) => {
         handleAnswer,
         primary,
         secondary,
+        typedAnswer,
+        setTypedAnswer,
         timeLeft,
         timerFrozen,
     } = props;
-
-    const [typedAnswer, setTypedAnswer] = useState('');
 
     useEffect(() => {
         playSound(questions[currentQuestion].media);
@@ -84,3 +84,6 @@ const styles = StyleSheet.create({
 });
 
 export default ListeningTyping;
+
+//FUNCTIONS AND STATES ALL IMPORTED!
+//Notes: Change to new generation method

@@ -3,14 +3,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Circle } from 'react-native-progress';
 import { COLORS } from '../../../constants';
 
-const ImageMulti = ({ currentQuestion, questions, options, handleAnswer, playSound, primary, secondary, timeLeft, timerFrozen }) => {
-    const [selectedOption, setSelectedOption] = useState(null);
-
-    const handleOptionPress = (option) => {
-        setSelectedOption(option);
-        const isCorrect = option === questions.correctAnswer;
-        handleAnswer(isCorrect, questions.correctAnswer, isCorrect ? 50 : 0);
-    };
+const ImageMulti = ({ currentQuestion, questions, options, handleAnswer, playSound, primary, secondary, timeLeft, timerFrozen, selectedOptions, setSelectedOptions, handleOptionPress }) => {
 
     return (
         <View style={styles.container}>
@@ -42,8 +35,8 @@ const ImageMulti = ({ currentQuestion, questions, options, handleAnswer, playSou
                         style={[
                             styles.option,
                             {
-                                borderColor: selectedOption === option ? primary : 'transparent',
-                                borderWidth: selectedOption === option ? 2 : 0,
+                                borderColor: selectedOptions === option ? primary : 'transparent',
+                                borderWidth: selectedOptions === option ? 2 : 0,
                                 backgroundColor: 'lightgrey',
                             }
                         ]}
@@ -99,3 +92,6 @@ const styles = StyleSheet.create({
 });
 
 export default ImageMulti;
+
+//FUNCTIONS AND STATES ALL IMPORTED!
+//DOES NOT WORK! ISSUE: ANSWER ALWAYS PROVIDED AS "NULL"

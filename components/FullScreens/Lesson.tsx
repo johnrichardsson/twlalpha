@@ -24,6 +24,8 @@ const Lesson = (props) => {
     const [bonusScore, setBonusScore] = useState(0);
     const [calculatedBaseScore, setCalculatedBaseScore] = useState(0);
     const [calculatedBonusScore, setCalculatedBonusScore] = useState(0);
+    const [typedAnswer, setTypedAnswer] = useState('');
+    const [shuffledOptions, setShuffledOptions] = useState([]);
 
     useEffect(() => {
         if (!timerFrozen) {
@@ -197,6 +199,28 @@ const Lesson = (props) => {
         console.log("Correct Matches:", correctMatches);
     };
 
+    const handleOptionPress = (option) => {
+    
+        let optionValue;
+        if (questions[currentQuestion].qType === 'picture-multi') {
+            optionValue = option.label;
+        } else {
+            optionValue = option;
+        }
+
+        setSelectedOptions(optionValue);
+
+        const isCorrect = optionValue.toString().trim().toLowerCase() === questions[currentQuestion].correctAnswer.toString().trim().toLowerCase();
+
+        handleAnswer(isCorrect, questions[currentQuestion].correctAnswer, isCorrect ? 50 : 0);
+    };
+
+    const handleSubmit = () => {
+        const isCorrect = typedAnswer.toLowerCase() === questions[currentQuestion].correctAnswer.toLowerCase();
+        handleAnswer(isCorrect, questions[currentQuestion].correctAnswer, isCorrect ? 50 : 0);
+        setTypedAnswer('');
+    };
+
     const toggleSelectOption = (pair, option) => {
         const selected = selectedOptions[pair] === option ? null : option;
         setSelectedOptions({ ...selectedOptions, [pair]: selected });
@@ -309,6 +333,8 @@ const Lesson = (props) => {
                         timerFrozen={timerFrozen}
                         handleAnswer={(typedAnswer) => handleAnswer(typedAnswer === questions[currentQuestion].correctAnswer, questions[currentQuestion].correctAnswer, typedAnswer === questions[currentQuestion].correctAnswer ? 50 : 0)}
                         playSound={() => playSound(questions[currentQuestion].media)}
+                        typedAnswer={typedAnswer}
+                        setTypedAnswer={setTypedAnswer}
                         primary={primary}
                         secondary={secondary}
                     />}
@@ -320,6 +346,11 @@ const Lesson = (props) => {
                         handleAnswer={(isCorrect, correctAnswer, points) => handleAnswer(isCorrect, correctAnswer, points)}
                         primary={primary}
                         secondary={secondary}
+                        selectedOptions={selectedOptions}
+                        setSelectedOptions={setSelectedOptions}
+                        handleOptionPress={handleOptionPress}
+                        shuffledOptions={shuffledOptions}
+                        setShuffledOptions={setShuffledOptions}
                     />}
                     {questions[currentQuestion].qType === 'picture-matching' && <PictureMatching
                         questions={questions}
@@ -342,7 +373,10 @@ const Lesson = (props) => {
                         options={questions[currentQuestion].options}
                         timeLeft={timeLeft}
                         timerFrozen={timerFrozen}
+                        selectedOptions={selectedOptions}
+                        setSelectedOptions={setSelectedOptions}
                         handleAnswer={(isCorrect, correctAnswer, points) => handleAnswer(isCorrect, correctAnswer, points)}
+                        handleOptionPress={handleOptionPress}
                         playSound={() => playSound(questions[currentQuestion].media)}
                         primary={primary}
                         secondary={secondary}
@@ -353,7 +387,10 @@ const Lesson = (props) => {
                         timeLeft={timeLeft}
                         timerFrozen={timerFrozen}
                         handleAnswer={(isCorrect, correctAnswer, points) => handleAnswer(isCorrect, correctAnswer, points)}
+                        handleSubmit={handleSubmit}
                         playSound={(pairUri) => playSound(pairUri)}
+                        typedAnswer={typedAnswer}
+                        setTypedAnswer={setTypedAnswer}
                         primary={primary}
                         secondary={secondary}
                     />}

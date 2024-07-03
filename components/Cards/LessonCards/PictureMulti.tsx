@@ -8,14 +8,16 @@ const PictureMulti = (props) => {
         currentQuestion,
         questions,
         handleAnswer,
+        handleOptionPress,
         primary,
         secondary,
         timeLeft,
         timerFrozen,
+        shuffledOptions,
+        setShuffledOptions,
+        selectedOption,
+        setSelectedOptions,
     } = props;
-
-    const [selectedOption, setSelectedOption] = useState(null);
-    const [shuffledOptions, setShuffledOptions] = useState([]);
 
     // Function to shuffle an array
 const shuffleArray = (array) => {
@@ -31,12 +33,6 @@ const shuffleArray = (array) => {
         // Shuffle options when the current question changes
         setShuffledOptions(shuffleArray(questions[currentQuestion].options));
     }, [currentQuestion, questions]);
-
-    const handleOptionPress = (option) => {
-        setSelectedOption(option);
-        const isCorrect = option.label === questions[currentQuestion].correctAnswer;
-        handleAnswer(isCorrect, questions[currentQuestion].correctAnswer, isCorrect ? 50 : 0);
-    };
 
     return (
         <View style={styles.container}>
@@ -122,3 +118,5 @@ const styles = StyleSheet.create({
 });
 
 export default PictureMulti;
+
+//ALL FUNCTIONS AND STATES IMPORTED!
