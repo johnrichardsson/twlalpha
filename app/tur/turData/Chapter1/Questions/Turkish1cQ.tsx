@@ -1,4 +1,4 @@
-const items = [
+export const Turkish1cItems = [
     { label: 'apple', translated: 'elma', image: 'http://app.worldlexicon.org/src/images/apple.png', media: 'http://app.worldlexicon.org/src/audio/tur/elma.mp3' },
     { label: 'orange', translated: 'portakal', image: 'http://app.worldlexicon.org/src/images/orange.png', media: 'http://app.worldlexicon.org/src/audio/tur/portakal.mp3' },
     { label: 'banana', translated: 'muz', image: 'http://app.worldlexicon.org/src/images/banana.png', media: 'http://app.worldlexicon.org/src/audio/tur/muz.mp3' },
@@ -38,242 +38,91 @@ const items = [
     { label: 'one hundred', translated: 'yüz', image: 'http://app.worldlexicon.org/src/images/one_hundred.png', media: 'http://app.worldlexicon.org/src/audio/tur/yuez.mp3'},
 ];
 
+const items = Turkish1cItems
+
+
+
 // Function to shuffle an array
-const shuffleArray = (array) => {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
+const shuffleArray = array => {
+    for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    return shuffledArray;
+    return array;
 };
 
-// Function to generate a PictureMulti question
-const generatePictureMultiQuestion = (questionText, correctLabel) => {
-    const shuffledItems = shuffleArray(items);
-    const correctItem = shuffledItems.find(item => item.label === correctLabel);
-
-    if (!correctItem) {
-        throw new Error(`Correct label '${correctLabel}' not found in items.`);
-    }
-
-    const options = shuffledItems.slice(0, 4);
+// Function to ensure correct option is included
+const ensureCorrectOption = (options, correctItem, numOptions) => {
     if (!options.includes(correctItem)) {
-        options[Math.floor(Math.random() * 4)] = correctItem;
+        options[Math.floor(Math.random() * numOptions)] = correctItem;
     }
-
-    return {
-        qType: 'picture-multi',
-        question: questionText,
-        options,
-        correctAnswer: correctLabel,
-        translated: correctItem.translated
-    };
+    return options;
 };
 
-// Function to generate a PictureMatching question
-const generatePictureMatchingQuestion = (questionText, questionId) => {
-    const shuffledItems = shuffleArray(items);
-    const pairs = shuffledItems.slice(0, 4).map(item => ({
-        left: item.translated,
-        right: item.image,
-        id: item.label // Use a unique identifier for each item
-    }));
-
-    return {
-        id: questionId, // Add a unique ID for the question
-        qType: 'picture-matching',
-        question: questionText,
-        pairs,
-        items: shuffledItems.slice(0, 4)
-    };
+// Select options and ensure the correct one is included
+const selectOptions = (items, correctItem, numOptions = 4) => {
+    const shuffled = shuffleArray([...items]);
+    const options = shuffled.slice(0, numOptions);
+    return ensureCorrectOption(options, correctItem, numOptions);
 };
 
-// Function to generate an ImageMulti question
-const generateImageMultiQuestion = (questionText, image, correctTranslated) => {
-    const correctItem = items.find(item => item.translated === correctTranslated);
-    if (!correctItem) {
-        throw new Error(`Item with translated name '${correctTranslated}' not found.`);
+// Generates a single question of specified type
+const generateQuestion = (item, config) => {
+    const options = selectOptions(items, item, 4);
+    switch (config.type) {
+        case 'picture-multi':
+            return {
+                qType: 'picture-multi',
+                question: `${config.questionText} "${item.translated}"?`,
+                options,
+                correctAnswer: item.label,
+                translated: item.translated
+            };
+        case 'image-multi':
+            return {
+                qType: 'image-multi',
+                question: config.questionText,
+                image: item.image,
+                media: item.media,
+                options: options.map(opt => opt.translated),
+                correctAnswer: item.translated
+            };
+        case 'picture-matching':
+            return {
+                qType: 'picture-matching',
+                question: config.questionText,
+                pairs: options.map(opt => ({ left: opt.translated, right: opt.image })),
+                items: options
+            };
+        case 'image-typing':
+            return {
+                qType: 'image-typing',
+                question: config.questionText,
+                image: item.image,
+                media: item.media,
+                correctAnswer: item.translated,
+            };
+        default:
+            return null;  // Return null if type is not recognized
     }
-    const shuffledItems = shuffleArray(items);
-    const options = shuffledItems.slice(0, 4).map(item => item.translated);
-    if (!options.includes(correctItem.translated)) {
-        options[Math.floor(Math.random() * 4)] = correctItem.translated;
-    }
-    return {
-        qType: 'image-multi',
-        question: questionText,
-        image,
-        media: correctItem.media,
-        options,
-        correctAnswer: correctItem.translated
-    };
 };
 
-// Function to generate an ImageTyping question
-const generateImageTypingQuestion = (questionText, correctLabel) => {
-    const correctItem = items.find(item => item.label === correctLabel);
-
-    if (!correctItem) {
-        throw new Error(`Correct label '${correctLabel}' not found in items.`);
-    }
-
-    return {
-        qType: 'image-typing',
-        question: questionText,
-        image: correctItem.image,
-        media: correctItem.media,
-        correctAnswer: correctItem.translated,
-    };
-};
-
-// Generate the questions
-export const Turkish1cQ = [
-    // PictureMulti
-    generatePictureMultiQuestion('Which is "elma"?', 'apple'),
-    generatePictureMultiQuestion('Which is "portakal"?', 'orange'),
-    generatePictureMultiQuestion('Which is "muz"?', 'banana'),
-    generatePictureMultiQuestion('Which is "nar"?', 'pomegranate'),
-    generatePictureMultiQuestion('Which is "tavuk eti"?', 'chicken meat'),
-    generatePictureMultiQuestion('Which is "et"?', 'beef'),
-    generatePictureMultiQuestion('Which is "balık eti"?', 'fish meat'),
-    generatePictureMultiQuestion('Which is "yemek"?', 'food'),
-    generatePictureMultiQuestion('Which is "su"?', 'water'),
-    generatePictureMultiQuestion('Which is "maydanoz"?', 'parsley'),
-    generatePictureMultiQuestion('Which is "tuz"?', 'salt'),
-    generatePictureMultiQuestion('Which is "makarna"?', 'pasta'),
-    generatePictureMultiQuestion('Which is "sebzeler"?', 'vegetables'),
-    generatePictureMultiQuestion('Which is "patates"?', 'potato'),
-    generatePictureMultiQuestion('Which is "domates"?', 'tomato'),
-    generatePictureMultiQuestion('Which is "ıspanak"?', 'spinach'),
-    generatePictureMultiQuestion('Which is "karabiber"?', 'pepper'),
-    generatePictureMultiQuestion('Which is "gazoz"?', 'soda'),
-    generatePictureMultiQuestion('Which is "kahvaltı"?', 'breakfast'),
-    generatePictureMultiQuestion('Which is "öğle yemeği"?', 'lunch'),
-    generatePictureMultiQuestion('Which is "meyve suyu"?', 'fruit juice'),
-    generatePictureMultiQuestion('Which is "bir"?', 'one'),
-    generatePictureMultiQuestion('Which is "iki"?', 'two'),
-    generatePictureMultiQuestion('Which is "üç"?', 'three'),
-    generatePictureMultiQuestion('Which is "dört"?', 'four'),
-    generatePictureMultiQuestion('Which is "beş"?', 'five'),
-    generatePictureMultiQuestion('Which is "altı"?', 'six'),
-    generatePictureMultiQuestion('Which is "yedi"?', 'seven'),
-    generatePictureMultiQuestion('Which is "sekiz"?', 'eight'),
-    generatePictureMultiQuestion('Which is "dokuz"?', 'nine'),
-    generatePictureMultiQuestion('Which is "on"?', 'ten'),
-    generatePictureMultiQuestion('Which is "yirmi"?', 'twenty'),
-    generatePictureMultiQuestion('Which is "otuz"?', 'thirty'),
-    generatePictureMultiQuestion('Which is "kırk"?', 'forty'),
-    generatePictureMultiQuestion('Which is "elli"?', 'fifty'),
-    generatePictureMultiQuestion('Which is "yüz"?', 'one hundred'),
-
-    // ImageMulti
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/apple.png', 'elma'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/orange.png', 'portakal'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/banana.png', 'muz'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/pomegranate.png', 'nar'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/chicken_meat.png', 'tavuk eti'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/beef.png', 'et'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/fısh_meat.png', 'balık eti'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/food.png', 'yemek'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/water.png', 'su'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/parsley.png', 'maydanoz'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/salt.png', 'tuz'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/pasta.png', 'makarna'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/vegetables.png', 'sebzeler'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/potato.png', 'patates'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/tomato.png', 'domates'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/spinach.png', 'ıspanak'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/pepper_spice.png', 'karabiber'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/soda.png', 'gazoz'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/breakfast.png', 'kahvaltı'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/lunch.png', 'öğle yemeği'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/juice.png', 'meyve suyu'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/one.png', 'bir'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/two.png', 'iki'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/three.png', 'üç'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/four.png', 'dört'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/five.png', 'beş'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/six.png', 'altı'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/seven.png', 'yedi'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/eight.png', 'sekiz'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/nine.png', 'dokuz'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/ten.png', 'on'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/twenty.png', 'yirmi'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/thirty.png', 'otuz'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/forty.png', 'kırk'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/fifty.png', 'elli'),
-    generateImageMultiQuestion('What is this?', 'http://app.worldlexicon.org/src/images/one_hundred.png', 'yüz'),
-
-    // ImageTyping
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'apple'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'orange'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'banana'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'pomegranate'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'chicken meat'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'beef'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'fish meat'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'food'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'water'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'parsley'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'salt'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'pasta'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'vegetables'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'potato'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'tomato'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'spinach'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'pepper'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'soda'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'breakfast'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'lunch'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'fruit juice'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'one'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'two'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'three'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'four'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'five'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'six'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'seven'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'eight'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'nine'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'ten'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'twenty'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'thirty'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'forty'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'fifty'),
-    generateImageTypingQuestion('Type what you see here in Turkish!', 'one hundred'),
-
-    // PictureMatching
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q1'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q2'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q3'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q4'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q5'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q6'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q7'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q8'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q9'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q10'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q11'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q12'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q13'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q14'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q15'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q16'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q17'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q18'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q19'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q20'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q21'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q22'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q23'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q24'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q25'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q26'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q27'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q28'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q29'),
-    generatePictureMatchingQuestion('Match the images with their Turkish names', 'q30'),
+// Configuration array
+const questionConfigs = [
+    { type: 'picture-multi', questionText: 'Which one is' },
+    { type: 'image-multi', questionText: 'What is this?' },
+    { type: 'image-typing', questionText: 'What is this?' },
+    { type: 'picture-matching', questionText: 'Match the images with their Turkish names' }
 ];
-// Shuffle the questions
-export const shuffledTurkish1cQ = shuffleArray(Turkish1cQ);
+
+// Generate questions for all items
+const generateQuiz = (items, configs) => {
+    return items.flatMap(item =>
+        configs.map(config => generateQuestion(item, config))
+    );
+};
+
+const quizQuestions = generateQuiz(Turkish1cItems, questionConfigs);
+const shuffledQuizQuestions = shuffleArray([...quizQuestions]);
+
+export const Turkish1cQ = shuffledQuizQuestions;

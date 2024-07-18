@@ -20,16 +20,21 @@ const PictureMatching = (props) => {
         questions,
         playSound,
         handleAnswer,
+        handleSelection,
+        correctMatches,
+        setCorrectMatches,
+        shuffledLeftItems,
+        setShuffledLeftItems,
+        shuffledRightItems,
+        setShuffledRightItems,
+        selectedItem,
+        setSelectedItem,
+        selectedSide,
+        setSelectedSide,
+        pairs,
         primary,
         secondary
     } = props;
-
-    const pairs = questions[currentQuestion].pairs;
-    const [shuffledLeftItems, setShuffledLeftItems] = useState([]);
-    const [shuffledRightItems, setShuffledRightItems] = useState([]);
-    const [correctMatches, setCorrectMatches] = useState({});
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [selectedSide, setSelectedSide] = useState(null);
 
     useEffect(() => {
         const leftItems = pairs.map(pair => pair.left);
@@ -40,30 +45,6 @@ const PictureMatching = (props) => {
         setSelectedItem(null);
         setSelectedSide(null);
     }, [pairs, currentQuestion]);
-
-    const handleSelection = (item, side) => {
-        playSound(item);
-        if (!selectedItem) {
-            setSelectedItem(item);
-            setSelectedSide(side);
-        } else if (selectedItem !== item && selectedSide !== side) {
-            const matchCondition = pairs.some(pair => 
-                (side === 'left' && selectedItem === pair.right && item === pair.left) ||
-                (side === 'right' && selectedItem === pair.left && item === pair.right)
-            );
-
-            if (matchCondition) {
-                setCorrectMatches(prev => ({ ...prev, [item]: true, [selectedItem]: true }));
-                if (Object.keys(correctMatches).length + 2 === pairs.length * 2) {
-                    handleAnswer(true, null, pairs.length * 25, true); // All correct
-                }
-            } else {
-                handleAnswer(false, null, Object.keys(correctMatches).length * 25, false); // Incorrect match
-            }
-            setSelectedItem(null);
-            setSelectedSide(null);
-        }
-    };
 
     return (
         <View style={styles.container}>
@@ -150,3 +131,5 @@ const styles = StyleSheet.create({
 });
 
 export default PictureMatching;
+
+//ALL FUNCTIONS AND STATES EXPORTED

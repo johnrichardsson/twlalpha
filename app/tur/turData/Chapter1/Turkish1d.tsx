@@ -1,26 +1,26 @@
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 import { Lesson } from '../../../../components';
 import { COLORS } from '../../../../constants';
-import { Turkish1cQ } from './Questions/Turkish1cQ';
+import { Turkish1dQ } from './Questions/Turkish1dQ';
  
-const Turkish1c = () => {
-    const turkish1c15q = Turkish1cQ.slice(0, 15);
+const Turkish1d = () => {
+    const turkish1d15q = Turkish1dQ.slice(0, 15);
 
     return (
         <SafeAreaView style={{ height: '100%', alignItems: 'center' }}>
                 <View style={styles.headBar}>
                     <Text style={styles.heading}>
-                        Chapter 1c
+                        Chapter 1d
                     </Text>
                 </View>
                 <View>
-                    <Lesson questions= {turkish1c15q} primary= {COLORS.turkishRed} secondary = {COLORS.turkishRedAlt}/>
+                    <Lesson questions= {turkish1d15q} primary= {COLORS.turkishRed} secondary = {COLORS.turkishRedAlt}/>
                 </View>
         </SafeAreaView>
     );
 };
 
-export default Turkish1c;
+export default Turkish1d;
 
 const styles = StyleSheet.create({
     heading: {

@@ -94,4 +94,3 @@ const styles = StyleSheet.create({
 export default ImageMulti;
 
 //FUNCTIONS AND STATES ALL IMPORTED!
-//DOES NOT WORK! ISSUE: ANSWER ALWAYS PROVIDED AS "NULL"

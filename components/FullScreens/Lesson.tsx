@@ -1,31 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { Alert, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { Alert, Animated, Dimensions, View, Text, TouchableOpacity, ScrollView, SafeAreaView, findNodeHandle, Platform } from 'react-native';
 import { Audio } from 'expo-av';
-
-import { Result, ListeningMulti, ListeningMatching, ListeningTyping, PictureMulti, PictureMatching, ImageTyping, ImageMulti } from '..';
+import { Result, ListeningMulti, ListeningMatching, ListeningTyping, PictureMulti, PictureMatching, ImageTyping, ImageMulti, GrammarClozeTest } from '..';
 import { lessonstyles } from '../../data';
 
 const Lesson = (props) => {
     const { questions, primary, secondary } = props;
 
+    //STATES
+
+    //PROGRESS CHECKS AND RESULTS
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [score, setScore] = useState(0);
     const [quizCompleted, setQuizCompleted] = useState(false);
-    const [correctMatches, setCorrectMatches] = useState({});
-    const [timeLeft, setTimeLeft] = useState(10);
     const [showResultModal, setShowResultModal] = useState(false);
     const [resultModalContent, setResultModalContent] = useState('');
-    const [timerFrozen, setTimerFrozen] = useState(false);
-    const [timeBonusEarned, setTimeBonusEarned] = useState(false);
-    const [matchedPairs, setMatchedPairs] = useState([]); // Track matched pairs
-    const [selectedOptions, setSelectedOptions] = useState({});
-    const [leftSideSelected, setLeftSideSelected] = useState(null); // Track the selected left side option
+
+    //SCORING STATES
     const [baseScore, setBaseScore] = useState(0);
     const [bonusScore, setBonusScore] = useState(0);
     const [calculatedBaseScore, setCalculatedBaseScore] = useState(0);
     const [calculatedBonusScore, setCalculatedBonusScore] = useState(0);
+    const [score, setScore] = useState(0);
+    const [timeBonusEarned, setTimeBonusEarned] = useState(false);
+    const [timerFrozen, setTimerFrozen] = useState(false);
+    const [timeLeft, setTimeLeft] = useState(10);
+
+    //MATCHING
+    const [correctMatches, setCorrectMatches] = useState({});
+    const [matchedPairs, setMatchedPairs] = useState([]);
+    const [leftSideSelected, setLeftSideSelected] = useState(null);
+    const [selectedOptions, setSelectedOptions] = useState({});
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedSide, setSelectedSide] = useState(null);
+    const [shuffledLeftItems, setShuffledLeftItems] = useState([]);
+    const [shuffledRightItems, setShuffledRightItems] = useState([]);
+
+    //TYPING
     const [typedAnswer, setTypedAnswer] = useState('');
+
+    //GRAMMAR UTILITY
+    const [selectedWordDetails, setSelectedWordDetails] = useState(null);
+    const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+    const [tooltipVisible, setTooltipVisible] = useState(false);
+    
+
+    //GENERAL PLACEHOLDERS
     const [shuffledOptions, setShuffledOptions] = useState([]);
+
+    //CONSTANTS
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+
+    //REFS
+
+    const fadeAnim = useRef(new Animated.Value(0)).current;
+    const tooltipRef = useRef(null);
+    const wordRefs = useRef([]);  // Initialize as an empty array
+    const parentRef = useRef(null);
+
+    //EFFECTS
 
     useEffect(() => {
         if (!timerFrozen) {
@@ -50,6 +83,8 @@ const Lesson = (props) => {
         setCorrectMatches({}); // Reset correct matches for new question
     }, [currentQuestion]);
 
+    //FUNCTIONS AND CONSTANTS
+
     const playSound = async (uri) => {
         try {
             const { sound } = await Audio.Sound.createAsync(
@@ -61,6 +96,12 @@ const Lesson = (props) => {
             console.log('Error playing sound: ', error);
         }
     };
+
+    const pairs = questions[currentQuestion].pairs;
+
+    //HANDLERS
+
+    //General Catch-All Answer Handler
 
     const handleAnswer = (isCorrect, correctAnswer = null, points = 0, allMatchesCorrect = false) => {
         let calculatedBaseScore = points;
@@ -125,6 +166,8 @@ const Lesson = (props) => {
         setTimerFrozen(true);
     };
 
+    //Matching Handlers
+
     const handleMatch = (selectedQuestion, selectedAnswer) => {
         const { pairs } = questions[currentQuestion];
         const matchedPair = pairs.find(pair => pair[0] === selectedQuestion);
@@ -158,6 +201,30 @@ const Lesson = (props) => {
             setTimerFrozen(true);
             setLeftSideSelected(null); // Reset the left side selection on incorrect match
             handleAnswer(false, matchedPair[1], calculatedBaseScore, false);
+        }
+    };
+
+    const handleSelection = (item, side) => {
+        playSound(item);
+        if (!selectedItem) {
+            setSelectedItem(item);
+            setSelectedSide(side);
+        } else if (selectedItem !== item && selectedSide !== side) {
+            const matchCondition = pairs.some(pair => 
+                (side === 'left' && selectedItem === pair.right && item === pair.left) ||
+                (side === 'right' && selectedItem === pair.left && item === pair.right)
+            );
+
+            if (matchCondition) {
+                setCorrectMatches(prev => ({ ...prev, [item]: true, [selectedItem]: true }));
+                if (Object.keys(correctMatches).length + 2 === pairs.length * 2) {
+                    handleAnswer(true, null, pairs.length * 25, true); // All correct
+                }
+            } else {
+                handleAnswer(false, null, Object.keys(correctMatches).length * 25, false); // Incorrect match
+            }
+            setSelectedItem(null);
+            setSelectedSide(null);
         }
     };
 
@@ -215,12 +282,6 @@ const Lesson = (props) => {
         handleAnswer(isCorrect, questions[currentQuestion].correctAnswer, isCorrect ? 50 : 0);
     };
 
-    const handleSubmit = () => {
-        const isCorrect = typedAnswer.toLowerCase() === questions[currentQuestion].correctAnswer.toLowerCase();
-        handleAnswer(isCorrect, questions[currentQuestion].correctAnswer, isCorrect ? 50 : 0);
-        setTypedAnswer('');
-    };
-
     const toggleSelectOption = (pair, option) => {
         const selected = selectedOptions[pair] === option ? null : option;
         setSelectedOptions({ ...selectedOptions, [pair]: selected });
@@ -234,6 +295,69 @@ const Lesson = (props) => {
         }
     };
 
+    //Typing Handlers
+
+    const handleSubmit = () => {
+        const isCorrect = typedAnswer.toLowerCase() === questions[currentQuestion].correctAnswer.toLowerCase();
+        handleAnswer(isCorrect, questions[currentQuestion].correctAnswer, isCorrect ? 50 : 0);
+        setTypedAnswer('');
+    };
+
+    //Grammar Utilities
+
+    const showWordDetails = (word, index) => {
+        setSelectedWordDetails(word);
+    
+        if (wordRefs.current[index]) {
+            if (Platform.OS === 'web') {
+                wordRefs.current[index].measure((x, y, width, height, pageX, pageY) => {
+                    console.log(`Word component position (web) - pageX: ${pageX}, pageY: ${pageY}, width: ${width}, height: ${height}`);
+                    console.log(`Window dimensions - width: ${windowWidth}, height: ${windowHeight}`);
+    
+                    let newX = x + (0.25 * width); // Center tooltip horizontally with the word
+                    let newY = y + (3 * height); // Center tooltip vertically with the word
+    
+                    if (newX + width > windowWidth) newX = windowWidth - width;
+                    if (newX < 0) newX = 0;
+                    if (newY + height > windowHeight) newY = windowHeight - height;
+                    if (newY < 0) newY = pageY + height + 10;
+    
+                    console.log(`Calculated tooltip position (web) - x: ${newX}, y: ${newY}`);
+    
+                    setTooltipPosition({ x: newX, y: newY });
+                    setTooltipVisible(true);
+                    fadeIn();
+                });
+            } else if (Platform.OS === 'android' || Platform.OS === 'ios') {
+                const nodeHandle = findNodeHandle(parentRef.current);
+                wordRefs.current[index].measureLayout(
+                    nodeHandle,
+                    (x, y, width, height) => {
+                        console.log(`Word component position (mobile) - x: ${x}, y: ${y}, width: ${width}, height: ${height}`);
+                        console.log(`Window dimensions - width: ${windowWidth}, height: ${windowHeight}`);
+
+                        let newX = x + width / 2; 
+                        let newY = y + height; 
+
+                        if (newX + width > windowWidth) newX = windowWidth - width;
+                        if (newX < 0) newX = 0;
+                        if (newY + height > windowHeight) newY = windowHeight - height;
+                        if (newY < 0) newY = y + height + 10;
+
+                        console.log(`Calculated tooltip position (mobile) - x: ${newX}, y: ${newY}`);
+
+                        setTooltipPosition({ x: newX, y: newY });
+                        setTooltipVisible(true);
+                        fadeIn();
+                    },
+                    (error) => console.log("measureLayout error: ", error)
+                );
+            }
+        }
+    };
+
+    //Results Handler
+
     const handleRetest = () => {
         setCurrentQuestion(0);
         setScore(0);
@@ -242,6 +366,27 @@ const Lesson = (props) => {
         setMatchedPairs([]);
         setBaseScore(0); // Reset the base score
         setCalculatedBaseScore(0); // Reset the calculated base score
+    };
+
+    //Animations
+
+    const fadeIn = () => {
+        Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 250,
+            useNativeDriver: true
+        }).start();
+    };
+
+    const fadeOut = () => {
+        Animated.timing(fadeAnim, {
+            toValue: 0,
+            duration: 1000,
+            useNativeDriver: true
+        }).start(() => {
+            setTooltipVisible(false);
+            setSelectedWordDetails(null);
+        });
     };
 
     const displayAnswers = questions.map((question, index) => (
@@ -258,6 +403,7 @@ const Lesson = (props) => {
     ));
 
     return (
+    <SafeAreaView style={{flex: 1}} ref={parentRef}>
         <View style={lessonstyles.container}>
             <Result
                 visible={showResultModal}
@@ -358,12 +504,23 @@ const Lesson = (props) => {
                         timeLeft={timeLeft}
                         timerFrozen={timerFrozen}
                         correctMatches={correctMatches}
+                        setCorrectMatches={setCorrectMatches}
+                        handleSelection={handleSelection}
                         selectedOptions={selectedOptions}
                         leftSideSelected={leftSideSelected}
                         handleAnswer = {handleAnswer}
                         playSound={() => playSound(questions[currentQuestion].media)}
                         handleMatchSelection={handleMatchSelection}
                         setResultModalContent={setResultModalContent}
+                        shuffledLeftItems={shuffledLeftItems}
+                        setShuffledLeftItems={setShuffledLeftItems}
+                        shuffledRightItems={shuffledRightItems}
+                        setShuffledRightItems={setShuffledRightItems}
+                        selectedItem={selectedItem}
+                        setSelectedItem={setSelectedItem}
+                        selectedSide={selectedSide}
+                        setSelectedSide={setSelectedSide}
+                        pairs={pairs}
                         primary={primary}
                         secondary={secondary}
                     />}
@@ -394,9 +551,30 @@ const Lesson = (props) => {
                         primary={primary}
                         secondary={secondary}
                     />}
+                    {questions[currentQuestion].type === 'grammar-cloze' && <GrammarClozeTest
+                        translated={questions[currentQuestion].translated}
+                        question={questions[currentQuestion].question}
+                        options={questions[currentQuestion].options}
+                        words={questions[currentQuestion].words}
+                        correctAnswer={questions[currentQuestion].correctAnswer} // Ensure this line is added
+                        handleAnswer={(isCorrect, correctAnswer) => handleAnswer(isCorrect, correctAnswer, isCorrect ? 50 : 0)}
+                        showWordDetails={showWordDetails}
+                        selectedWordDetails={selectedWordDetails}
+                        setSelectedWordDetails={setSelectedWordDetails}
+                        tooltipPosition={tooltipPosition}
+                        setTooltipPosition={setTooltipPosition}
+                        tooltipVisible={tooltipVisible}
+                        setTooltipVisible={setTooltipVisible}
+                        fadeIn = {fadeIn}
+                        fadeOut = {fadeOut}
+                        wordRefs = {wordRefs.current}
+                        tooltipRef = {tooltipRef}
+                        fadeAnim = {fadeAnim}
+                    />}
                 </View>
             )}
         </View>
+    </SafeAreaView>
     );
 };
 
