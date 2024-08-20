@@ -1,21 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Alert, Animated, Dimensions, View, Text, TouchableOpacity, ScrollView, SafeAreaView, findNodeHandle, Platform } from 'react-native';
 import { Audio } from 'expo-av';
-import { Result, ListeningMulti, ListeningMatching, ListeningTyping, PictureMulti, PictureMatching, ImageTyping, ImageMulti, GrammarClozeTest } from '..';
+import { Result, ListeningMulti, ListeningMatching, ListeningTyping, PictureMulti, PictureMatching, ImageTyping, ImageMulti, GrammarClozeTest, GrammarWordOrderAudio, GrammarWordOrderTranslate } from '..';
 import { lessonstyles } from '../../data';
 
 const Lesson = (props) => {
     const { questions, primary, secondary } = props;
 
-    //STATES
+    // STATES
 
-    //PROGRESS CHECKS AND RESULTS
+    // PROGRESS CHECKS AND RESULTS
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [showResultModal, setShowResultModal] = useState(false);
     const [resultModalContent, setResultModalContent] = useState('');
 
-    //SCORING STATES
+    // SCORING STATES
     const [baseScore, setBaseScore] = useState(0);
     const [bonusScore, setBonusScore] = useState(0);
     const [calculatedBaseScore, setCalculatedBaseScore] = useState(0);
@@ -25,7 +25,7 @@ const Lesson = (props) => {
     const [timerFrozen, setTimerFrozen] = useState(false);
     const [timeLeft, setTimeLeft] = useState(10);
 
-    //MATCHING
+    // MATCHING
     const [correctMatches, setCorrectMatches] = useState({});
     const [matchedPairs, setMatchedPairs] = useState([]);
     const [leftSideSelected, setLeftSideSelected] = useState(null);
@@ -35,31 +35,29 @@ const Lesson = (props) => {
     const [shuffledLeftItems, setShuffledLeftItems] = useState([]);
     const [shuffledRightItems, setShuffledRightItems] = useState([]);
 
-    //TYPING
+    // TYPING
     const [typedAnswer, setTypedAnswer] = useState('');
 
-    //GRAMMAR UTILITY
+    // GRAMMAR UTILITY
     const [selectedWordDetails, setSelectedWordDetails] = useState(null);
     const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
     const [tooltipVisible, setTooltipVisible] = useState(false);
-    
+    const [tooltipDimensions, setTooltipDimensions] = useState({ width: 0, height: 0 });
 
-    //GENERAL PLACEHOLDERS
+    // GENERAL PLACEHOLDERS
     const [shuffledOptions, setShuffledOptions] = useState([]);
 
-    //CONSTANTS
+    // CONSTANTS
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
-
-    //REFS
-
+    
+    // REFS
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const tooltipRef = useRef(null);
     const wordRefs = useRef([]);  // Initialize as an empty array
     const parentRef = useRef(null);
 
-    //EFFECTS
-
+    // EFFECTS
     useEffect(() => {
         if (!timerFrozen) {
             const timer = setInterval(() => {
@@ -83,7 +81,7 @@ const Lesson = (props) => {
         setCorrectMatches({}); // Reset correct matches for new question
     }, [currentQuestion]);
 
-    //FUNCTIONS AND CONSTANTS
+    // FUNCTIONS AND CONSTANTS
 
     const playSound = async (uri) => {
         try {
@@ -99,9 +97,9 @@ const Lesson = (props) => {
 
     const pairs = questions[currentQuestion].pairs;
 
-    //HANDLERS
+    // HANDLERS
 
-    //General Catch-All Answer Handler
+    // General Catch-All Answer Handler
 
     const handleAnswer = (isCorrect, correctAnswer = null, points = 0, allMatchesCorrect = false) => {
         let calculatedBaseScore = points;
@@ -166,7 +164,7 @@ const Lesson = (props) => {
         setTimerFrozen(true);
     };
 
-    //Matching Handlers
+    // Matching Handlers
 
     const handleMatch = (selectedQuestion, selectedAnswer) => {
         const { pairs } = questions[currentQuestion];
@@ -267,7 +265,6 @@ const Lesson = (props) => {
     };
 
     const handleOptionPress = (option) => {
-    
         let optionValue;
         if (questions[currentQuestion].qType === 'picture-multi') {
             optionValue = option.label;
@@ -295,7 +292,7 @@ const Lesson = (props) => {
         }
     };
 
-    //Typing Handlers
+    // Typing Handlers
 
     const handleSubmit = () => {
         const isCorrect = typedAnswer.toLowerCase() === questions[currentQuestion].correctAnswer.toLowerCase();
@@ -303,27 +300,22 @@ const Lesson = (props) => {
         setTypedAnswer('');
     };
 
-    //Grammar Utilities
+    // Grammar Utilities
 
     const showWordDetails = (word, index) => {
         setSelectedWordDetails(word);
-    
+
         if (wordRefs.current[index]) {
             if (Platform.OS === 'web') {
                 wordRefs.current[index].measure((x, y, width, height, pageX, pageY) => {
                     console.log(`Word component position (web) - pageX: ${pageX}, pageY: ${pageY}, width: ${width}, height: ${height}`);
                     console.log(`Window dimensions - width: ${windowWidth}, height: ${windowHeight}`);
-    
-                    let newX = x + (0.25 * width); // Center tooltip horizontally with the word
-                    let newY = y + (3 * height); // Center tooltip vertically with the word
-    
-                    if (newX + width > windowWidth) newX = windowWidth - width;
-                    if (newX < 0) newX = 0;
-                    if (newY + height > windowHeight) newY = windowHeight - height;
-                    if (newY < 0) newY = pageY + height + 10;
-    
+
+                    let newX = (0.04 * windowWidth - tooltipDimensions.width) / 2;
+                    let newY = (0.2 * windowWidth);
+
                     console.log(`Calculated tooltip position (web) - x: ${newX}, y: ${newY}`);
-    
+
                     setTooltipPosition({ x: newX, y: newY });
                     setTooltipVisible(true);
                     fadeIn();
@@ -336,13 +328,8 @@ const Lesson = (props) => {
                         console.log(`Word component position (mobile) - x: ${x}, y: ${y}, width: ${width}, height: ${height}`);
                         console.log(`Window dimensions - width: ${windowWidth}, height: ${windowHeight}`);
 
-                        let newX = x + width / 2; 
-                        let newY = y + height; 
-
-                        if (newX + width > windowWidth) newX = windowWidth - width;
-                        if (newX < 0) newX = 0;
-                        if (newY + height > windowHeight) newY = windowHeight - height;
-                        if (newY < 0) newY = y + height + 10;
+                        let newX = (windowWidth - tooltipDimensions.width) / 2;
+                        let newY = (windowHeight - tooltipDimensions.height) / 2;
 
                         console.log(`Calculated tooltip position (mobile) - x: ${newX}, y: ${newY}`);
 
@@ -356,7 +343,7 @@ const Lesson = (props) => {
         }
     };
 
-    //Results Handler
+    // Results Handler
 
     const handleRetest = () => {
         setCurrentQuestion(0);
@@ -368,7 +355,7 @@ const Lesson = (props) => {
         setCalculatedBaseScore(0); // Reset the calculated base score
     };
 
-    //Animations
+    // Animations
 
     const fadeIn = () => {
         Animated.timing(fadeAnim, {
@@ -403,7 +390,7 @@ const Lesson = (props) => {
     ));
 
     return (
-    <SafeAreaView style={{flex: 1}} ref={parentRef}>
+    <SafeAreaView style={{flex: 1, width: '100%'}} ref={parentRef}>
         <View style={lessonstyles.container}>
             <Result
                 visible={showResultModal}
@@ -446,7 +433,7 @@ const Lesson = (props) => {
                     </TouchableOpacity>
                 </View>
             ) : (
-                <View>
+                <View style = {{ flex: 1, width: '100%'}}>
                     {questions[currentQuestion].qType === 'listening-multi' && <ListeningMulti
                         questions={questions}
                         currentQuestion={currentQuestion}
@@ -458,17 +445,22 @@ const Lesson = (props) => {
                         secondary={secondary}
                     />}
                     {questions[currentQuestion].qType === 'listening-matching' && <ListeningMatching
-                        questions={questions}
                         currentQuestion={currentQuestion}
                         timeLeft={timeLeft}
                         timerFrozen={timerFrozen}
-                        handleMatch={handleMatch}
-                        handleMatchSelection={handleMatchSelection}
-                        toggleSelectOption={toggleSelectOption}
+                        questions={questions}
+                        handleSelection={handleSelection}
                         correctMatches={correctMatches}
-                        leftSideSelected={leftSideSelected}
-                        selectedOptions={selectedOptions}
-                        playSound={(pairUri) => playSound(pairUri)}
+                        setCorrectMatches={setCorrectMatches}
+                        shuffledLeftItems={shuffledLeftItems}
+                        setShuffledLeftItems={setShuffledLeftItems}
+                        shuffledRightItems={shuffledRightItems}
+                        setShuffledRightItems={setShuffledRightItems}
+                        selectedItem={selectedItem}
+                        setSelectedItem={setSelectedItem}
+                        selectedSide={selectedSide}
+                        setSelectedSide={setSelectedSide}
+                        pairs={pairs}
                         primary={primary}
                         secondary={secondary}
                     />}
@@ -551,12 +543,12 @@ const Lesson = (props) => {
                         primary={primary}
                         secondary={secondary}
                     />}
-                    {questions[currentQuestion].type === 'grammar-cloze' && <GrammarClozeTest
+                    {questions[currentQuestion].qType === 'grammar-cloze' && <GrammarClozeTest
                         translated={questions[currentQuestion].translated}
                         question={questions[currentQuestion].question}
                         options={questions[currentQuestion].options}
                         words={questions[currentQuestion].words}
-                        correctAnswer={questions[currentQuestion].correctAnswer} // Ensure this line is added
+                        correctAnswer={questions[currentQuestion].correctAnswer}
                         handleAnswer={(isCorrect, correctAnswer) => handleAnswer(isCorrect, correctAnswer, isCorrect ? 50 : 0)}
                         showWordDetails={showWordDetails}
                         selectedWordDetails={selectedWordDetails}
@@ -565,12 +557,37 @@ const Lesson = (props) => {
                         setTooltipPosition={setTooltipPosition}
                         tooltipVisible={tooltipVisible}
                         setTooltipVisible={setTooltipVisible}
-                        fadeIn = {fadeIn}
-                        fadeOut = {fadeOut}
-                        wordRefs = {wordRefs.current}
-                        tooltipRef = {tooltipRef}
-                        fadeAnim = {fadeAnim}
-                    />}
+                        fadeIn={fadeIn}
+                        fadeOut={fadeOut}
+                        wordRefs={wordRefs.current}
+                        tooltipRef={tooltipRef}
+                        tooltipDimensions = {tooltipDimensions}
+                        setTooltipDimensions = {setTooltipDimensions}
+                        fadeAnim={fadeAnim}
+                    />
+                    }
+                    {questions[currentQuestion].qType === 'grammar-word-order-translate' && <GrammarWordOrderTranslate
+                        prompt={questions[currentQuestion].prompt}
+                        translated={questions[currentQuestion].translated}
+                        correctAnswerFill={questions[currentQuestion].correctAnswerFill}
+                        wordsFill={questions[currentQuestion].wordsFill}
+                        handleAnswer={handleAnswer}
+                        primary={primary}
+                        secondary={secondary}
+                        handleSubmit={handleSubmit}
+                    />
+                    }
+                    {questions[currentQuestion].qType === 'grammar-word-order-audio' && <GrammarWordOrderAudio
+                        audioUri={questions[currentQuestion].audioUri}
+                        question={questions[currentQuestion].question}
+                        playSound={playSound}
+                        correctAnswerFill={questions[currentQuestion].correctAnswerFill}
+                        wordsFill={questions[currentQuestion].wordsFill}
+                        handleAnswer={handleAnswer}
+                        primary={primary}
+                        secondary={secondary}
+                    />
+                    }
                 </View>
             )}
         </View>

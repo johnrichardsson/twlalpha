@@ -47,7 +47,7 @@ const PictureMatching = (props) => {
     }, [pairs, currentQuestion]);
 
     return (
-        <View style={styles.container}>
+        <View style={lessonstyles.container}>
             <Text style={lessonstyles.question}>
                 {questions[currentQuestion]?.question || "Loading question..."}
             </Text>
@@ -61,28 +61,29 @@ const PictureMatching = (props) => {
                 showsText={false}
                 style={{ marginBottom: 20 }}
             />
-            <View style={styles.pairsContainer}>
-                <View style={styles.sideContainer}>
+            <Text style={lessonstyles.bonusText}> BONUS </Text>
+            <View style={lessonstyles.pairsContainer}>
+                <View style={lessonstyles.sideContainer}>
                     {shuffledLeftItems.map((left, index) => (
                         <TouchableOpacity
                             key={'left-' + index}
                             style={[
-                                styles.option,
+                                lessonstyles.matchingOption,
                                 { backgroundColor: correctMatches[left] ? secondary : (selectedItem === left && selectedSide === 'left') ? primary : 'lightgrey' }
                             ]}
                             onPress={() => handleSelection(left, 'left')}
                             disabled={correctMatches[left]}
                         >
-                            <Text style={styles.optionText}>{left}</Text>
+                            <Text style={lessonstyles.buttonText}>{left}</Text>
                         </TouchableOpacity>
                     ))}
                 </View>
-                <View style={styles.sideContainer}>
+                <View style={lessonstyles.sideContainer}>
                     {shuffledRightItems.map((right, index) => (
                         <TouchableOpacity
                             key={'right-' + index}
                             style={[
-                                styles.option,
+                                lessonstyles.matchingOption,
                                 { backgroundColor: correctMatches[right] ? secondary : (selectedItem === right && selectedSide === 'right') ? primary : 'lightgrey' }
                             ]}
                             onPress={() => handleSelection(right, 'right')}
@@ -98,10 +99,6 @@ const PictureMatching = (props) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        height: '100%'
-    },
     pairsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',

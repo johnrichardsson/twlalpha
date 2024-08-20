@@ -1,280 +1,4 @@
-export const items = [
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-c.mp3",
-        options: ["c", "ş", "ç", "j"],
-        correctAnswer: "c",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-ch.mp3",
-        options: ["ç", "ş", "g", "ğ"],
-        correctAnswer: "ç",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-gh.mp3",
-        options: ["ğ", "g", "k", "c"],
-        correctAnswer: "ğ",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-j.mp3",
-        options: ["j", "z", "c", "d"],
-        correctAnswer: "j",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-l.mp3",
-        options: ["l", "r", "b", "u"],
-        correctAnswer: "l",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-m.mp3",
-        options: ["m", "n", "b", "p"],
-        correctAnswer: "m",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-n.mp3",
-        options: ["n", "g", "m", "h"],
-        correctAnswer: "n",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-p.mp3",
-        options: ["p", "b", "v", "h"],
-        correctAnswer: "p",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-r.mp3",
-        options: ["r", "l", "a", "e"],
-        correctAnswer: "r",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-s.mp3",
-        options: ["s", "z", "j", "c"],
-        correctAnswer: "s",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-sh.mp3",
-        options: ["ç", "ş", "s", "z"],
-        correctAnswer: "ş",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-t.mp3",
-        options: ["t", "d", "z", "c"],
-        correctAnswer: "t",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-v.mp3",
-        options: ["v", "b", "f", "m"],
-        correctAnswer: "v",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-y.mp3",
-        options: ["y", "u", "ı", "j"],
-        correctAnswer: "y",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Which letter makes this sound?",
-        media: "http://app.worldlexicon.org/src/audio/tur/tur-z.mp3",
-        options: ["z", "v", "y", "j"],
-        correctAnswer: "z",
-        qType: 'listening-multi'
-    },
-    {
-        question: "Match the letters to the sounds:",
-        pairs: [
-            ["http://app.worldlexicon.org/src/audio/tur/tur-c.mp3", "c"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-ch.mp3", "ç"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-j.mp3", "j"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-sh.mp3", "ş"],
-            
-        ],
-        qType: 'listening-matching',
-    },
-    {
-        question: "Match the letters to the sounds:",
-        pairs: [
-            ["http://app.worldlexicon.org/src/audio/tur/tur-gh.mp3", "ğ"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-g.mp3", "g"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-l.mp3", "l"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-r.mp3", "r"],
-            
-        ],
-        qType: 'listening-matching',
-    },
-    {
-        question: "Match the letters to the sounds:",
-        pairs: [
-            ["http://app.worldlexicon.org/src/audio/tur/tur-m.mp3", "m"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-n.mp3", "n"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-p.mp3", "p"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-t.mp3", "t"],
-            
-        ],
-        qType: 'listening-matching',
-    },
-    {
-        question: "Match the letters to the sounds:",
-        pairs: [
-            ["http://app.worldlexicon.org/src/audio/tur/tur-s.mp3", "s"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-sh.mp3", "ş"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-j.mp3", "j"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-ch.mp3", "ç"],
-            
-        ],
-        qType: 'listening-matching',
-    },
-    {
-        question: "Match the letters to the sounds:",
-        pairs: [
-            ["http://app.worldlexicon.org/src/audio/tur/tur-v.mp3", "v"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-b.mp3", "b"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-h.mp3", "h"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-f.mp3", "f"],
-            
-        ],
-        qType: 'listening-matching',
-    },
-    {
-        question: "Match the letters to the sounds:",
-        pairs: [
-            ["http://app.worldlexicon.org/src/audio/tur/tur-y.mp3", "y"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-j.mp3", "j"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-ch.mp3", "ç"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-c.mp3", "c"],
-            
-        ],
-        qType: 'listening-matching',
-    },
-    {
-        question: "Match the letters to the sounds:",
-        pairs: [
-            ["http://app.worldlexicon.org/src/audio/tur/tur-z.mp3", "z"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-j.mp3", "j"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-v.mp3", "v"],
-            ["http://app.worldlexicon.org/src/audio/tur/tur-c.mp3", "c"],
-            
-        ],
-        qType: 'listening-matching',
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-c.mp3',
-        correctAnswer: 'c'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-ch.mp3',
-        correctAnswer: 'ç'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-gh.mp3',
-        correctAnswer: 'ğ'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-j.mp3',
-        correctAnswer: 'j'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-l.mp3',
-        correctAnswer: 'l'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-m.mp3',
-        correctAnswer: 'm'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-n.mp3',
-        correctAnswer: 'n'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-p.mp3',
-        correctAnswer: 'p'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-r.mp3',
-        correctAnswer: 'r'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-s.mp3',
-        correctAnswer: 's'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-sh.mp3',
-        correctAnswer: 'ş'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-t.mp3',
-        correctAnswer: 't'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-v.mp3',
-        correctAnswer: 'v'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-y.mp3',
-        correctAnswer: 'y'
-    },
-    {
-        qType: 'listening-typing',
-        question: 'Type the letter you hear!',
-        media: 'http://app.worldlexicon.org/src/audio/tur/tur-z.mp3',
-        correctAnswer: 'z'
-    },
-];
-
-
-
+// Function to shuffle an array
 const shuffleArray = (array) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
@@ -284,16 +8,88 @@ const shuffleArray = (array) => {
     return shuffledArray;
 };
 
-const shuffleOptions = (questions) => {
-    return questions.map((question) => {
-        if (question.qType === 'listening-multi') {
-            return { ...question, options: shuffleArray(question.options) };
-        } else if (question.qType === 'listening-matching') {
-            return { ...question, pairs: shuffleArray(question.pairs) };
-        } else {
-            return question; // Handle other question types if needed
-        }
-    });
+// Function to ensure correct option is included
+const ensureCorrectOption = (options, correctItem, numOptions) => {
+    if (!options.includes(correctItem)) {
+        options[Math.floor(Math.random() * numOptions)] = correctItem;
+    }
+    return options;
 };
 
-export const shuffledTurkish1bQ = shuffleArray(shuffleOptions(items));
+// Select options and ensure the correct one is included
+const selectOptions = (items, correctItem, numOptions = 4) => {
+    const shuffled = shuffleArray([...items]);
+    const options = shuffled.slice(0, numOptions);
+    return ensureCorrectOption(options, correctItem, numOptions);
+};
+
+// Generates a single question of specified type
+const generateQuestion = (item, config) => {
+    const options = selectOptions(Turkish1bItems, item, 4);
+    switch (config.type) {
+        case 'listening-multi':
+            return {
+                qType: 'listening-multi',
+                question: `${config.questionText}`,
+                options: options.map(opt => opt.label),
+                correctAnswer: item.label,
+                media: item.media,
+            };
+        case 'listening-matching':
+            return {
+                qType: 'listening-matching',
+                question: config.questionText,
+                pairs: options.map(opt => ({ left: opt.media, right: opt.label })),
+                items: options,
+            };
+        case 'listening-typing':
+            return {
+                qType: 'listening-typing',
+                question: config.questionText,
+                media: item.media,
+                correctAnswer: item.translated,
+            };
+        default:
+            return null;  // Return null if type is not recognized
+    }
+};
+
+// Configuration array
+const questionConfigs = [
+    { type: 'listening-multi', questionText: 'Which letter makes this sound?' },
+    { type: 'listening-matching', questionText: 'Match the letters to the sounds:' },
+    { type: 'listening-typing', questionText: 'Type the letter you hear!' },
+];
+
+// Generate questions for all items
+const generateQuiz = (items, configs) => {
+    return items.flatMap(item =>
+        configs.map(config => generateQuestion(item, config))
+    );
+};
+
+// Define the items array
+const Turkish1bItems = [
+    { label: 'c', translated: 'c', media: 'http://app.worldlexicon.org/src/audio/tur/tur-c.mp3' },
+    { label: 'ç', translated: 'ç', media: 'http://app.worldlexicon.org/src/audio/tur/tur-ch.mp3' },
+    { label: 'ğ', translated: 'ğ', media: 'http://app.worldlexicon.org/src/audio/tur/tur-gh.mp3' },
+    { label: 'j', translated: 'j', media: 'http://app.worldlexicon.org/src/audio/tur/tur-j.mp3' },
+    { label: 'l', translated: 'l', media: 'http://app.worldlexicon.org/src/audio/tur/tur-l.mp3' },
+    { label: 'm', translated: 'm', media: 'http://app.worldlexicon.org/src/audio/tur/tur-m.mp3' },
+    { label: 'n', translated: 'n', media: 'http://app.worldlexicon.org/src/audio/tur/tur-n.mp3' },
+    { label: 'p', translated: 'p', media: 'http://app.worldlexicon.org/src/audio/tur/tur-p.mp3' },
+    { label: 'r', translated: 'r', media: 'http://app.worldlexicon.org/src/audio/tur/tur-r.mp3' },
+    { label: 's', translated: 's', media: 'http://app.worldlexicon.org/src/audio/tur/tur-s.mp3' },
+    { label: 'ş', translated: 'ş', media: 'http://app.worldlexicon.org/src/audio/tur/tur-sh.mp3' },
+    { label: 't', translated: 't', media: 'http://app.worldlexicon.org/src/audio/tur/tur-t.mp3' },
+    { label: 'v', translated: 'v', media: 'http://app.worldlexicon.org/src/audio/tur/tur-v.mp3' },
+    { label: 'y', translated: 'y', media: 'http://app.worldlexicon.org/src/audio/tur/tur-y.mp3' },
+    { label: 'z', translated: 'z', media: 'http://app.worldlexicon.org/src/audio/tur/tur-z.mp3' },
+];
+
+
+// Generate quiz questions
+const quizQuestions = generateQuiz(Turkish1bItems, questionConfigs);
+const shuffledQuizQuestions = shuffleArray([...quizQuestions]);
+
+export const Turkish1bQ = shuffledQuizQuestions;

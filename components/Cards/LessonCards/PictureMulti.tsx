@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { COLORS } from '../../../constants';
 import { Circle } from 'react-native-progress';
+import { lessonstyles } from '../../../data';
 
 const PictureMulti = (props) => {
     const {
@@ -20,14 +21,14 @@ const PictureMulti = (props) => {
     } = props;
 
     // Function to shuffle an array
-const shuffleArray = (array) => {
-    const shuffledArray = [...array];
-    for (let i = shuffledArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-    }
-    return shuffledArray;
-};
+    const shuffleArray = (array) => {
+        const shuffledArray = [...array];
+        for (let i = shuffledArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+        }
+        return shuffledArray;
+    };
 
     useEffect(() => {
         // Shuffle options when the current question changes
@@ -35,8 +36,8 @@ const shuffleArray = (array) => {
     }, [currentQuestion, questions]);
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.question}>{questions[currentQuestion].question}</Text>
+        <View style={lessonstyles.container}>
+            <Text style={lessonstyles.question}>{questions[currentQuestion].question}</Text>
             <Circle
                 progress={timeLeft / 10}
                 size={30}
@@ -47,13 +48,13 @@ const shuffleArray = (array) => {
                 showsText={false}
                 style={{ marginBottom: 20 }}
             />
-            <Text style={{ marginBottom: 10 }}> BONUS </Text>
-            <View style={styles.optionsContainer}>
+            <Text style={lessonstyles.bonusText}>BONUS</Text>
+            <View style={lessonstyles.optionsContainer}>
                 {shuffledOptions.map((option, index) => (
                     <TouchableOpacity
                         key={index}
                         style={[
-                            styles.option,
+                            lessonstyles.option,
                             {
                                 borderColor: selectedOption === option ? primary : 'transparent',
                                 borderWidth: selectedOption === option ? 2 : 0,
@@ -64,10 +65,14 @@ const shuffleArray = (array) => {
                     >
                         <Image
                             source={{ uri: option.image }}
-                            style={styles.image}
+                            style={{
+                                width: '100%',
+                                height: 120,
+                                borderRadius: 8,
+                            }}
                             resizeMode="contain"
                         />
-                        <Text style={styles.label}>              </Text>
+                        <Text style={lessonstyles.label}>              </Text>
                     </TouchableOpacity>
                 ))}
             </View>
@@ -75,48 +80,6 @@ const shuffleArray = (array) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-    },
-    question: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        color: 'black',
-        textAlign: 'center',
-    },
-    optionsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between', // Adjust to space between options
-        width: '90%',
-    },
-    option: {
-        margin: 10,
-        padding: 10,
-        borderRadius: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '40%', // Ensure the options take half the width of the container
-        height: 180, // Increase height to ensure image and label fit well
-    },
-    image: {
-        width: '100%',
-        height: 120, // Adjust height to ensure image is fully visible
-        borderRadius: 8,
-    },
-    label: {
-        marginTop: 5,
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: 'black',
-        textAlign: 'center',
-    },
-});
-
 export default PictureMulti;
 
-//ALL FUNCTIONS AND STATES IMPORTED!
+//STYLES UNIFIED

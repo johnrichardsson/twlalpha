@@ -11,29 +11,34 @@ const ListeningMulti = (props) => {
         timerFrozen,
         questions,
         handleAnswer,
-        playSound
+        playSound,
+        primary,
+        secondary,
     } = props;
 
+    const question = questions[currentQuestion];
+
     return (
-        <View style={{ alignItems: 'center', height: "100%" }}>
+        <View style={lessonstyles.container}>
             <Text style={lessonstyles.question}>
-                {questions[currentQuestion].question}
+                {question.question}
             </Text>
             <Circle
-                progress={timeLeft / 10}
                 size={30}
                 thickness={15}
-                color={timerFrozen ? COLORS.gray : props.primary}
-                unfilledColor={timerFrozen ? COLORS.gray : props.secondary}
                 borderWidth={0}
                 showsText={false}
                 style={{ marginBottom: 0 }}
+                progress={timeLeft / 10}
+                color={timerFrozen ? COLORS.gray : primary}
+                unfilledColor={timerFrozen ? COLORS.gray : secondary}
             />
-            <Text style={{ marginBottom: 10 }}> BONUS </Text>
+            <Text style={lessonstyles.bonusText}> BONUS </Text>
             <View style={{ width: '100%', alignItems: "center", height: 150 }}>
                 <TouchableOpacity
-                    style={{ alignItems: 'center', justifyContent: 'center', width: 100, height: 100, borderRadius: 25, marginBottom: 30, backgroundColor: 'lightgrey' }}
-                    onPress={() => playSound(questions[currentQuestion].media)}>
+                    style={lessonstyles.audioButton}
+                    onPress={() => playSound(question.media)}
+                >
                     <Image
                         style={{ width: 64, height: 50 }}
                         source={require('../../../../twlalpha/assets/images/audio.png')}
@@ -41,14 +46,14 @@ const ListeningMulti = (props) => {
                 </TouchableOpacity>
             </View>
             <View style={lessonstyles.optionsContainer}>
-                {questions[currentQuestion].options.map((option, index) => (
+                {question.options.map((option, index) => (
                     <TouchableOpacity
                         key={index}
                         style={lessonstyles.option}
                         onPress={() => handleAnswer(option)}
                     >
                         <Text style={lessonstyles.buttonText}>
-                            {option}
+                            {typeof option === 'string' ? option : option.label}
                         </Text>
                     </TouchableOpacity>
                 ))}
@@ -59,5 +64,4 @@ const ListeningMulti = (props) => {
 
 export default ListeningMulti;
 
-//FUNCTIONS AND STATES ALL IMPORTED!
-//Notes: Change to new generation method
+//STYLES UNIFIED!

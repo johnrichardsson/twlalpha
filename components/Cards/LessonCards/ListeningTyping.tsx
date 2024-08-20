@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { COLORS } from '../../../constants';
+import { lessonstyles } from '../../../data';
 import { Circle } from 'react-native-progress';
 
 const ListeningTyping = (props) => {
@@ -22,8 +23,8 @@ const ListeningTyping = (props) => {
     }, [currentQuestion]);
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.question}>{questions[currentQuestion].question}</Text>
+        <View style={lessonstyles.container}>
+            <Text style={lessonstyles.question}>{questions[currentQuestion].question}</Text>
             <Circle
                 progress={timeLeft / 10}
                 size={30}
@@ -34,9 +35,9 @@ const ListeningTyping = (props) => {
                 showsText={false}
                 style={{ marginBottom: 0 }}
             />
-            <Text style={{ marginBottom: 10 }}> BONUS </Text>
+            <Text style={lessonstyles.bonusText}> BONUS </Text>
             <TouchableOpacity
-                    style={{ alignItems: 'center', justifyContent: 'center', width: 100, height: 100, borderRadius: 25, marginBottom: 30, backgroundColor: 'lightgrey' }}
+                    style={ lessonstyles.audioButton }
                     onPress={() => playSound(questions[currentQuestion].media)}>
                     <Image
                         style={{ width: 64, height: 50 }}
@@ -44,16 +45,16 @@ const ListeningTyping = (props) => {
                     />
             </TouchableOpacity>
             <TextInput
-                style={styles.input}
+                style={lessonstyles.input}
                 onChangeText={setTypedAnswer}
                 value={typedAnswer}
                 placeholder="Type your answer here"
             />
             <TouchableOpacity
                 onPress={() => handleAnswer(typedAnswer)}
-                style = {{backgroundColor: 'lightgrey'}}
+                style = {{borderRadius: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: primary, height: '10%', width: '40%'}}
             >
-                <Text>
+                <Text style = {lessonstyles.submitText}>
                     Submit
                 </Text>
             </TouchableOpacity>
@@ -61,29 +62,8 @@ const ListeningTyping = (props) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-    },
-    question: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        color: 'black',
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 20,
-        paddingHorizontal: 10,
-        width: '80%',
-    },
-});
-
 export default ListeningTyping;
 
 //FUNCTIONS AND STATES ALL IMPORTED!
 //Notes: Change to new generation method
+//STYLES UNIFIED!

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Circle } from 'react-native-progress';
 import { COLORS } from '../../../constants';
+import { lessonstyles } from '../../../data';
 
 const ImageTyping = (props) => {
     const {
@@ -19,8 +20,8 @@ const ImageTyping = (props) => {
     } = props;
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.question}>{questions[currentQuestion].question}</Text>
+        <View style={lessonstyles.container}>
+            <Text style={lessonstyles.question}>{questions[currentQuestion].question}</Text>
             <TouchableOpacity 
                 style={{ alignItems: 'center', justifyContent: 'center', width: '90%', borderRadius: 25, marginBottom: 30, backgroundColor: 'lightgrey' }} 
                 onPress={() => playSound(questions[currentQuestion].media)}>
@@ -40,14 +41,14 @@ const ImageTyping = (props) => {
                 style={{ marginBottom: 20 }}
             />
             <TextInput
-                style={styles.input}
+                style={lessonstyles.input}
                 value={typedAnswer}
                 onChangeText={setTypedAnswer}
                 placeholder="Type your answer here"
                 placeholderTextColor="grey"
             />
-            <TouchableOpacity style={[styles.submitButton, { backgroundColor: primary }]} onPress={handleSubmit}>
-                <Text style={styles.submitButtonText}>Submit</Text>
+            <TouchableOpacity style={{ borderRadius: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: primary, height: '10%', width: '40%'}} onPress={handleSubmit}>
+                <Text style={lessonstyles.submitText}>Submit</Text>
             </TouchableOpacity>
         </View>
     );

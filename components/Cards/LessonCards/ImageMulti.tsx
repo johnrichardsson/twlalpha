@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Circle } from 'react-native-progress';
 import { COLORS } from '../../../constants';
+import { lessonstyles } from '../../../data';
 
 const ImageMulti = ({ currentQuestion, questions, options, handleAnswer, playSound, primary, secondary, timeLeft, timerFrozen, selectedOptions, setSelectedOptions, handleOptionPress }) => {
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.question}>{questions.question}</Text>
+        <View style={lessonstyles.container}>
+            <Text style={lessonstyles.question}>{questions.question}</Text>
             <TouchableOpacity
                 style={{ alignItems: 'center', justifyContent: 'center', width: '90%', borderRadius: 25, marginBottom: 30, backgroundColor: 'lightgrey' }}
-                onPress={() => playSound(questions.media)}>
+                onPress={() => playSound(questions[currentQuestion].media)}>
                 <Image
                     source={{ uri: questions.image }}
-                    style={styles.image}
+                    style={lessonstyles.imageDisplay}
                     resizeMode="contain"
                 />
             </TouchableOpacity>
@@ -27,13 +28,13 @@ const ImageMulti = ({ currentQuestion, questions, options, handleAnswer, playSou
                 showsText={false}
                 style={{ marginBottom: 20 }}
             />
-            <Text style={{ marginBottom: 10 }}> BONUS </Text>
-            <View style={styles.optionsContainer}>
+            <Text style={lessonstyles.bonusText}> BONUS </Text>
+            <View style={lessonstyles.optionsContainer}>
                 {questions.options.map((option, index) => (
                     <TouchableOpacity
                         key={index}
                         style={[
-                            styles.option,
+                            lessonstyles.option,
                             {
                                 borderColor: selectedOptions === option ? primary : 'transparent',
                                 borderWidth: selectedOptions === option ? 2 : 0,
@@ -42,54 +43,13 @@ const ImageMulti = ({ currentQuestion, questions, options, handleAnswer, playSou
                         ]}
                         onPress={() => handleOptionPress(option)}
                     >
-                        <Text style={styles.label}>{option}</Text>
+                        <Text style={lessonstyles.buttonText}>{option}</Text>
                     </TouchableOpacity>
                 ))}
             </View>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-    },
-    question: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        color: 'black',
-        textAlign: 'center',
-    },
-    image: {
-        width: '80%',
-        height: 200,
-        marginBottom: 20,
-    },
-    optionsContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-between', // Adjust to space between options
-        width: '90%',
-    },
-    option: {
-        margin: 10,
-        padding: 10,
-        borderRadius: 8,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '40%', // Ensure the options take half the width of the container
-        height: 60, // Adjust height to ensure options fit well
-    },
-    label: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: 'black',
-        textAlign: 'center',
-    },
-});
 
 export default ImageMulti;
 
